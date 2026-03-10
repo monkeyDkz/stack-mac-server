@@ -1,0 +1,15 @@
+# ============================================
+# PAPERCLIP — Configuration
+# Orchestrateur d'agents IA (Ollama + Mem0)
+# ============================================
+
+llm:
+  provider: ollama
+  config:
+    model: llama3.2:3b
+    base_url: http://host.docker.internal:11434
+
+memory:
+  provider: mem0
+  config:
+    url: http://host.docker.internal:8050

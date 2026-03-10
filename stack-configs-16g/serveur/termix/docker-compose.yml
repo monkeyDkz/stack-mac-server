@@ -1,0 +1,25 @@
+# ============================================
+# STACK TERMIX — Terminal SSH web
+# https://github.com/Termix-SSH/Termix
+# ============================================
+
+services:
+  termix:
+    image: ghcr.io/termix-ssh/termix:latest
+    container_name: termix
+    restart: unless-stopped
+    ports:
+      - "3006:3000"
+    volumes:
+      - termix_data:/app/data
+    environment:
+      NODE_ENV: production
+    networks:
+      - stack-network
+
+volumes:
+  termix_data:
+
+networks:
+  stack-network:
+    external: true

@@ -1,0 +1,55 @@
+# ============================================
+# STACK TWENTY — CRM
+# Utilise PostgreSQL + Redis partagés (stack core)
+# ============================================
+
+services:
+  twenty-server:
+    image: twentycrm/twenty:latest
+    container_name: twenty-server
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      SERVER_URL: https://crm.home
+      PG_DATABASE_HOST: postgres
+      PG_DATABASE_PORT: "5432"
+      PG_DATABASE_USER: twenty
+      PG_DATABASE_PASSWORD: ${TWENTY_DB_PASSWORD:?Set TWENTY_DB_PASSWORD}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      APP_SECRET: ${TWENTY_APP_SECRET:?Set TWENTY_APP_SECRET}
+      STORAGE_TYPE: local
+    volumes:
+      - twenty_data:/app/.local-storage
+    depends_on:
+      - twenty-worker
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - stack-network
+
+  twenty-worker:
+    image: twentycrm/twenty:latest
+    container_name: twenty-worker
+    restart: unless-stopped
+    command: ["yarn", "worker:prod"]
+    environment:
+      PG_DATABASE_HOST: postgres
+      PG_DATABASE_PORT: "5432"
+      PG_DATABASE_USER: twenty
+      PG_DATABASE_PASSWORD: ${TWENTY_DB_PASSWORD}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      APP_SECRET: ${TWENTY_APP_SECRET}
+      STORAGE_TYPE: local
+    networks:
+      - stack-network
+
+volumes:
+  twenty_data:
+
+networks:
+  stack-network:
+    external: true

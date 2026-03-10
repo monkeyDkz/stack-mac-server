@@ -1,0 +1,23 @@
+# ============================================
+# OPEN NOTEBOOK — Notes IA (Mac)
+# Connecté à Ollama + Chroma
+# ============================================
+
+services:
+  open-notebook:
+    image: ghcr.io/lfnovo/open-notebook:latest
+    container_name: open-notebook
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    volumes:
+      - open_notebook_data:/app/data
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      CHROMA_HOST: host.docker.internal
+      CHROMA_PORT: 8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  open_notebook_data:

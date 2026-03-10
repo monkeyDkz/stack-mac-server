@@ -1,0 +1,22 @@
+# ============================================
+# MEM0 — Mémoire persistante IA (Mac)
+# Connecté à Chroma + Ollama
+# ============================================
+
+services:
+  mem0:
+    image: mem0ai/mem0:latest
+    container_name: mem0
+    restart: unless-stopped
+    ports:
+      - "8050:8050"
+    volumes:
+      - mem0_data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      MEM0_CONFIG: /app/config.yaml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  mem0_data:

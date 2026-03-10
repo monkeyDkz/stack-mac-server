@@ -1,0 +1,23 @@
+# ============================================
+# LOBECHAT — Interface chat IA (Mac)
+# Connecté à Ollama local
+# ============================================
+
+services:
+  lobechat:
+    image: lobehub/lobe-chat:latest
+    container_name: lobechat
+    restart: unless-stopped
+    ports:
+      - "3210:3210"
+    volumes:
+      - lobechat_data:/app/data
+    environment:
+      OLLAMA_PROXY_URL: http://host.docker.internal:11434/v1
+      NEXT_PUBLIC_ANALYTICS_POSTHOG: ""
+      NEXT_PUBLIC_ANALYTICS_UMAMI: ""
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  lobechat_data:

@@ -1,0 +1,29 @@
+# ============================================
+# ntfy — Configuration serveur
+# ============================================
+
+base-url: "https://notify.home"
+listen-http: ":80"
+behind-proxy: true
+
+# Cache des messages
+cache-file: /var/cache/ntfy/cache.db
+cache-duration: "24h"
+
+# Pièces jointes
+attachment-cache-dir: /var/cache/ntfy/attachments
+attachment-total-size-limit: "1G"
+attachment-file-size-limit: "15M"
+attachment-expiry-duration: "24h"
+
+# Authentification
+auth-default-access: "deny-all"
+auth-file: /var/cache/ntfy/user.db
+
+# Limites
+visitor-request-limit-burst: 60
+visitor-request-limit-replenish: "5s"
+message-size-limit: "4k"
+
+# Désactiver le relais vers ntfy.sh
+upstream-base-url: ""

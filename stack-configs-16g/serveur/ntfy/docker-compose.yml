@@ -1,0 +1,29 @@
+# ============================================
+# STACK NTFY — Notifications push
+# ============================================
+
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    restart: unless-stopped
+    command: serve
+    ports:
+      - "8085:80"
+    volumes:
+      - ntfy_cache:/var/cache/ntfy
+      - ./server.yml:/etc/ntfy/server.yml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+    networks:
+      - stack-network
+
+volumes:
+  ntfy_cache:
+
+networks:
+  stack-network:
+    external: true

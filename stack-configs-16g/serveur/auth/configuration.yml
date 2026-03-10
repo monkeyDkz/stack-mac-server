@@ -1,0 +1,61 @@
+# ============================================
+# Authelia — Configuration
+# ============================================
+
+server:
+  address: 'tcp://0.0.0.0:9091/'
+
+log:
+  level: info
+
+theme: dark
+
+totp:
+  issuer: homelab
+  period: 30
+  skew: 1
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+    password:
+      algorithm: argon2id
+      iterations: 3
+      memory: 65536
+      parallelism: 4
+      salt_length: 16
+
+access_control:
+  default_policy: deny
+  rules:
+    # Dashboard et status publics
+    - domain: 'dash.home'
+      policy: bypass
+    # Notifications publiques
+    - domain: 'notify.home'
+      policy: bypass
+    # Booking public (Cal.com)
+    - domain: 'cal.home'
+      policy: bypass
+    # Tous les autres services nécessitent une auth
+    - domain: '*.home'
+      policy: one_factor
+
+session:
+  name: authelia_session
+  cookies:
+    - domain: 'home'
+      authelia_url: 'https://auth.home'
+
+storage:
+  postgres:
+    address: 'tcp://postgres:5432'
+    database: authelia_db
+    username: authelia
+
+notifier:
+  smtp:
+    address: 'smtp://billionmail:587'
+    username: authelia@yourdomain.com
+    sender: 'Authelia <authelia@yourdomain.com>'
+    disable_require_tls: false

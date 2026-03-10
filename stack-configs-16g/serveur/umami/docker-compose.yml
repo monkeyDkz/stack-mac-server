@@ -1,0 +1,28 @@
+# ============================================
+# STACK UMAMI — Analytics web
+# Utilise PostgreSQL partagé (stack core)
+# ============================================
+
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:latest
+    container_name: umami
+    restart: unless-stopped
+    ports:
+      - "3005:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD}@postgres:5432/umami_db
+      APP_SECRET: ${UMAMI_APP_SECRET:?Set UMAMI_APP_SECRET}
+      TRACKER_SCRIPT_NAME: s.js
+      DISABLE_TELEMETRY: "1"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/heartbeat || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - stack-network
+
+networks:
+  stack-network:
+    external: true

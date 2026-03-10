@@ -1,0 +1,56 @@
+# ============================================
+# STACK NETWORK — Caddy + CrowdSec
+# Reverse proxy HTTPS + IDS/IPS
+# ============================================
+
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_logs:/var/log/caddy
+    environment:
+      CROWDSEC_BOUNCER_KEY: ${CROWDSEC_BOUNCER_KEY:?Set CROWDSEC_BOUNCER_KEY}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - stack-network
+
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    restart: unless-stopped
+    ports:
+      - "8180:8080"
+      - "6060:6060"
+    volumes:
+      - ./acquis.yaml:/etc/crowdsec/acquis.yaml:ro
+      - crowdsec_db:/var/lib/crowdsec/data/
+      - crowdsec_config:/etc/crowdsec/
+      - caddy_logs:/var/log/caddy:ro
+      - /var/log:/var/log/host:ro
+    environment:
+      COLLECTIONS: "crowdsecurity/caddy crowdsecurity/linux crowdsecurity/sshd"
+      BOUNCER_KEY_caddy: ${CROWDSEC_BOUNCER_KEY}
+      GID: "1000"
+    networks:
+      - stack-network
+
+volumes:
+  caddy_data:
+  caddy_config:
+  caddy_logs:
+  crowdsec_db:
+  crowdsec_config:
+
+networks:
+  stack-network:
+    external: true

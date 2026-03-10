@@ -1,0 +1,28 @@
+# ============================================
+# STACK DOCKGE — Gestion Docker visuelle
+# ============================================
+
+services:
+  dockge:
+    image: louislam/dockge:1
+    container_name: dockge
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - /opt/stacks:/opt/stacks
+    environment:
+      DOCKGE_STACKS_DIR: /opt/stacks
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5001 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - stack-network
+
+networks:
+  stack-network:
+    external: true

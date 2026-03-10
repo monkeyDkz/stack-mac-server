@@ -1,0 +1,36 @@
+# ============================================
+# STACK BILLIONMAIL — Serveur email complet
+# Inclut Postfix, Dovecot, Rspamd, Web UI
+# ============================================
+
+services:
+  billionmail:
+    image: billionmail/billionmail:latest
+    container_name: billionmail
+    restart: unless-stopped
+    hostname: mail.yourdomain.com
+    ports:
+      - "25:25"       # SMTP
+      - "587:587"     # SMTP submission
+      - "993:993"     # IMAPS
+      - "8025:80"     # Web UI
+    volumes:
+      - billionmail_data:/var/mail
+      - billionmail_config:/etc/billionmail
+      - billionmail_dkim:/etc/opendkim
+    environment:
+      DOMAIN: yourdomain.com
+      HOSTNAME: mail.yourdomain.com
+      ADMIN_EMAIL: admin@yourdomain.com
+      ADMIN_PASSWORD: ${BILLIONMAIL_ADMIN_PASSWORD:?Set BILLIONMAIL_ADMIN_PASSWORD}
+    networks:
+      - stack-network
+
+volumes:
+  billionmail_data:
+  billionmail_config:
+  billionmail_dkim:
+
+networks:
+  stack-network:
+    external: true

@@ -1,0 +1,124 @@
+# ============================================
+# CADDYFILE — Reverse proxy pour tous les services
+# ============================================
+
+# --- SSO ---
+auth.home {
+	reverse_proxy authelia:9091
+}
+
+# --- Git ---
+gitea.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy gitea:3000
+}
+
+# --- Deploy ---
+deploy.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy host.docker.internal:3000
+}
+
+# --- CRM ---
+crm.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy twenty-server:3000
+}
+
+# --- Automation ---
+n8n.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy n8n:5678
+}
+
+# --- Mail ---
+mail.home {
+	reverse_proxy billionmail:80
+}
+
+# --- Cloud ---
+cloud.home {
+	reverse_proxy nextcloud:80
+}
+
+# --- Monitoring ---
+monitor.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy uptime-kuma:3001
+}
+
+# --- Dashboard ---
+dash.home {
+	reverse_proxy oak:80
+}
+
+# --- Docker Management ---
+docker.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy dockge:5001
+}
+
+# --- Scheduling ---
+cal.home {
+	reverse_proxy calcom:3000
+}
+
+# --- Analytics ---
+stats.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy umami:3000
+}
+
+# --- Backup ---
+backup.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy duplicati:8200
+}
+
+# --- Notifications ---
+notify.home {
+	reverse_proxy ntfy:80
+}
+
+# --- Server Management ---
+termix.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy termix:3000
+}
+
+# --- Web Scraper ---
+scrape.home {
+	forward_auth authelia:9091 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email
+	}
+	reverse_proxy firecrawl-api:3002
+}
+

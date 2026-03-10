@@ -1,0 +1,29 @@
+# ============================================
+# STACK PLAYWRIGHT — Tests E2E / Scraping
+# Déclenché par n8n ou Gitea CI
+# ============================================
+
+services:
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.49.0-noble
+    container_name: playwright
+    restart: "no"
+    working_dir: /tests
+    volumes:
+      - playwright_tests:/tests
+      - playwright_results:/results
+    environment:
+      CI: "true"
+    # Par défaut le container reste en attente
+    # Lancer un test : docker exec playwright npx playwright test
+    command: ["sleep", "infinity"]
+    networks:
+      - stack-network
+
+volumes:
+  playwright_tests:
+  playwright_results:
+
+networks:
+  stack-network:
+    external: true

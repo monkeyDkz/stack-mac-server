@@ -1,0 +1,53 @@
+# ============================================
+# STACK FIRECRAWL — Web scraper → Markdown
+# Réutilise Redis du core. Pas besoin de Postgres (auth désactivée).
+# API accessible sur scrape.home ou localhost:3008
+# ============================================
+
+services:
+  firecrawl-api:
+    image: ghcr.io/mendableai/firecrawl:latest
+    container_name: firecrawl-api
+    restart: unless-stopped
+    ports:
+      - "3008:3002"
+    environment:
+      PORT: "3002"
+      HOST: 0.0.0.0
+      # Réutilise le Redis du core (stack-network)
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
+      REDIS_RATE_LIMIT_URL: redis://:${REDIS_PASSWORD}@redis:6379/2
+      # Pas de Postgres (pas d'auth par API key)
+      USE_DB_AUTHENTICATION: "false"
+      # Playwright interne pour le scraping
+      PLAYWRIGHT_MICROSERVICE_URL: http://firecrawl-playwright:3000/scrape
+      # Limites ressources (serveur 16 Go)
+      MAX_CPU: "0.5"
+      MAX_RAM: "0.5"
+      NUM_WORKERS_PER_QUEUE: "2"
+      # Admin des queues
+      BULL_AUTH_KEY: ${FIRECRAWL_BULL_KEY:-firecrawl_admin}
+    depends_on:
+      - firecrawl-playwright
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3002/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - stack-network
+
+  firecrawl-playwright:
+    image: ghcr.io/mendableai/firecrawl-playwright:latest
+    container_name: firecrawl-playwright
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+      MAX_CONCURRENT_PAGES: "3"
+      BLOCK_MEDIA: "true"
+    networks:
+      - stack-network
+
+networks:
+  stack-network:
+    external: true

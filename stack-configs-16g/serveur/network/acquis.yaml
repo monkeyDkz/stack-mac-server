@@ -1,0 +1,18 @@
+# ============================================
+# CrowdSec — Sources de logs à analyser
+# ============================================
+
+# Logs Caddy (reverse proxy)
+filenames:
+  - /var/log/caddy/*.log
+labels:
+  type: caddy
+
+---
+
+# Logs SSH du host
+filenames:
+  - /var/log/host/auth.log
+  - /var/log/host/syslog
+labels:
+  type: syslog
