@@ -1,7 +1,7 @@
 # ============================================
 # MEM0 — Configuration
-# Memoire partagee entre LobeChat, SiYuan,
-# Paperclip, n8n
+# Mémoire partagée entre LobeChat, SurfSense,
+# Open Notebook, Paperclip
 # ============================================
 
 vector_store:
@@ -10,11 +10,6 @@ vector_store:
     host: host.docker.internal
     port: 8000
     collection_name: mem0
-
-graph_store:
-  provider: kuzu
-  config:
-    url: /app/data/kuzu_db
 
 llm:
   provider: ollama

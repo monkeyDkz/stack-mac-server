@@ -1,0 +1,18 @@
+# ============================================
+# LiteLLM Proxy — Traduit API Anthropic → Ollama
+# Permet à Claude Code (Paperclip) d'utiliser des modèles locaux
+# ============================================
+
+model_list:
+  - model_name: qwen2.5-coder
+    litellm_params:
+      model: ollama/qwen2.5-coder
+      api_base: http://host.docker.internal:11434
+
+  - model_name: llama3.2:3b
+    litellm_params:
+      model: ollama/llama3.2:3b
+      api_base: http://host.docker.internal:11434
+
+general_settings:
+  drop_params: true

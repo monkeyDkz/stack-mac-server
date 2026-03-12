@@ -128,11 +128,34 @@ pull_model "codellama:7b"
 log "Modeles Ollama prets"
 
 # ============================================
-# ETAPE 3 — DEPLOIEMENT DES STACKS DOCKER
+# ETAPE 3 — PREPARATION SOURCES
 # ============================================
 
 echo ""
-info "=== Etape 3 : Deploiement des stacks Docker ==="
+info "=== Etape 3 : Preparation des sources ==="
+
+# Paperclip n'a pas d'image publique — clone depuis GitHub
+if [ ! -d "$MAC_DIR/paperclip/repo" ]; then
+    info "Clone de Paperclip depuis GitHub..."
+    git clone --depth 1 https://github.com/paperclipai/paperclip.git "$MAC_DIR/paperclip/repo" \
+        && log "Paperclip clone" \
+        || warn "Paperclip : echec du clone (skip)"
+else
+    log "Paperclip deja clone"
+fi
+
+# Fix upstream : lockfile desynchronise (cross-env manquant)
+if [ -f "$MAC_DIR/paperclip/repo/Dockerfile" ]; then
+    sed -i '' 's/pnpm install --frozen-lockfile/pnpm install --no-frozen-lockfile/' "$MAC_DIR/paperclip/repo/Dockerfile"
+    log "Paperclip Dockerfile patche (--no-frozen-lockfile)"
+fi
+
+# ============================================
+# ETAPE 4 — DEPLOIEMENT DES STACKS DOCKER
+# ============================================
+
+echo ""
+info "=== Etape 4 : Deploiement des stacks Docker ==="
 
 deploy_stack() {
     local name="$1"
@@ -146,22 +169,36 @@ deploy_stack() {
 deploy_stack "chroma"
 
 info "Attente que Chroma soit pret..."
-for i in $(seq 1 15); do
-    if curl -sf http://localhost:8000/api/v1/heartbeat &>/dev/null; then
+for i in $(seq 1 30); do
+    if curl -sf http://localhost:8000/api/v2/heartbeat &>/dev/null; then
         log "Chroma pret"
         break
     fi
+    [ "$i" -eq 30 ] && warn "Chroma pas pret apres 60s — on continue"
     sleep 2
 done
 
-# Mem0 (depend de Chroma + Ollama)
-deploy_stack "mem0"
+# Mem0 (depend de Chroma + Ollama) — build local
+info "Deploiement de mem0..."
+(cd "$MAC_DIR/mem0" && docker compose up -d --build)
+log "mem0 demarre"
 
 # Le reste (independants)
 deploy_stack "lobechat"
-deploy_stack "surfsense"
-deploy_stack "open-notebook"
-deploy_stack "paperclip"
+deploy_stack "siyuan"
+
+# Bootstrap SiYuan (notebooks, dashboards, daily notes)
+info "Bootstrap de SiYuan..."
+bash "$MAC_DIR/siyuan/bootstrap.sh" && log "SiYuan bootstrap termine" || warn "SiYuan bootstrap echoue (non bloquant)"
+
+# Paperclip — build from source
+if [ -d "$MAC_DIR/paperclip/repo" ]; then
+    info "Deploiement de paperclip (build from source)..."
+    (cd "$MAC_DIR/paperclip" && docker compose up -d --build)
+    log "paperclip demarre"
+else
+    warn "Paperclip skip (repo non clone)"
+fi
 
 # ============================================
 # VERIFICATION
@@ -183,8 +220,7 @@ echo ""
 echo "Services :"
 echo ""
 echo "  localhost:3210   — LobeChat (interface chat IA)"
-echo "  localhost:3007   — SurfSense (recherche perso)"
-echo "  localhost:8501   — Open Notebook (analyse docs)"
+echo "  localhost:6806   — SiYuan Note (knowledge base)"
 echo "  localhost:8060   — Paperclip (orchestrateur IA)"
 echo "  localhost:8000   — Chroma (base vectorielle)"
 echo "  localhost:8050   — Mem0 (memoire IA)"

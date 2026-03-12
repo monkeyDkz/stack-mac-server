@@ -1,0 +1,28 @@
+# ============================================
+# SIYUAN NOTE — Knowledge base structuree (Mac)
+# API REST : port 6806 (40+ endpoints)
+# Remplace Open Notebook (API bien plus riche)
+# ============================================
+# Version unlock : https://github.com/appdev/siyuan-unlock
+# Image Docker : apkdv/siyuan-unlock (toutes features debloquees)
+# Doc API : https://github.com/siyuan-note/siyuan/blob/master/API.md
+# Auth : Authorization: Token <SIYUAN_ACCESS_AUTH_CODE>
+# ============================================
+
+services:
+    siyuan:
+        image: apkdv/siyuan-unlock:latest
+        container_name: siyuan
+        restart: unless-stopped
+        ports:
+            - '6806:6806'
+        volumes:
+            - siyuan_data:/siyuan/workspace
+        environment:
+            - SIYUAN_ACCESS_AUTH_CODE=${SIYUAN_TOKEN:-paperclip-siyuan-token}
+        command: ['--workspace=/siyuan/workspace/', '--accessAuthCode=${SIYUAN_TOKEN:- }']
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+
+volumes:
+    siyuan_data:

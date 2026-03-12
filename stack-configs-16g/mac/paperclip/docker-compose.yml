@@ -1,23 +1,62 @@
 # ============================================
 # PAPERCLIP — Orchestrateur d'agents IA (Mac)
-# Coordonne Ollama + Mem0
+# Repo : https://github.com/paperclipai/paperclip
+# ============================================
+# Pas d'image Docker publique — build depuis les sources.
+# Le script setup clone le repo dans ./repo/ avant le deploy.
 # ============================================
 
 services:
-  paperclip:
-    image: ghcr.io/papeeria/paperclip:latest
-    container_name: paperclip
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: paperclip-litellm
     restart: unless-stopped
     ports:
-      - "8060:8060"
+      - "4000:4000"
     volumes:
-      - paperclip_data:/app/data
-      - ./config.yaml:/app/config.yaml:ro
-    environment:
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
-      MEM0_URL: http://host.docker.internal:8050
+      - ./litellm-config.yaml:/app/config.yaml
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  paperclip-db:
+    image: postgres:16-alpine
+    container_name: paperclip-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: paperclip
+      POSTGRES_PASSWORD: paperclip
+      POSTGRES_DB: paperclip
+    volumes:
+      - paperclip_db_data:/var/lib/postgresql/data
+
+  paperclip:
+    build:
+      context: ./repo
+    container_name: paperclip
+    restart: unless-stopped
+    ports:
+      - "8060:3100"
+    volumes:
+      - paperclip_data:/paperclip
+    environment:
+      DATABASE_URL: postgresql://paperclip:paperclip@paperclip-db:5432/paperclip
+      BETTER_AUTH_SECRET: paperclip-dev-secret-change-me
+      # Claude Code → LiteLLM proxy (traduit API Anthropic → Ollama)
+      ANTHROPIC_BASE_URL: http://litellm:4000
+      ANTHROPIC_API_KEY: sk-litellm
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      MEM0_URL: http://host.docker.internal:8050
+      N8N_WEBHOOK_URL: https://n8n.home/webhook
+      N8N_AGENT_KEY: ${N8N_AGENT_KEY:-change-me-agent-key}
+      SIYUAN_URL: http://host.docker.internal:6806
+      SIYUAN_TOKEN: ${SIYUAN_TOKEN:-paperclip-siyuan-token}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - paperclip-db
+      - litellm
+
 volumes:
   paperclip_data:
+  paperclip_db_data:

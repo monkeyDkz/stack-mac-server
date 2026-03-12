@@ -1,7 +1,6 @@
 # ============================================
-# MEM0 — Configuration
-# Memoire partagee entre LobeChat, SiYuan,
-# Paperclip, n8n
+# MEM0 — Configuration TEST (tinyllama)
+# Pour MacBook M1 16 Go — modele leger
 # ============================================
 
 vector_store:
@@ -11,15 +10,10 @@ vector_store:
     port: 8000
     collection_name: mem0
 
-graph_store:
-  provider: kuzu
-  config:
-    url: /app/data/kuzu_db
-
 llm:
   provider: ollama
   config:
-    model: llama3.2:3b
+    model: tinyllama
     base_url: http://host.docker.internal:11434
 
 embedder:

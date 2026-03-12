@@ -1,11 +1,12 @@
 # ============================================
 # MEM0 — Mémoire persistante IA (Mac)
 # Connecté à Chroma + Ollama
+# Build local (pas d'image Docker Hub)
 # ============================================
 
 services:
   mem0:
-    image: mem0ai/mem0:latest
+    build: .
     container_name: mem0
     restart: unless-stopped
     ports:

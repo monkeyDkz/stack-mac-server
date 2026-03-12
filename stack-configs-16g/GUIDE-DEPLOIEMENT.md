@@ -439,10 +439,10 @@ docker compose up -d
 
 1. API accessible sur `https://scrape.home` (ou `http://IP:3008`)
 2. Scrape une page : `curl -X POST http://localhost:3008/v0/scrape -H "Content-Type: application/json" -d '{"url": "https://example.com"}'`
-3. Résultat en Markdown propre, idéal pour alimenter SurfSense/Chroma via n8n
+3. Résultat en Markdown propre, idéal pour alimenter Chroma via n8n
 
 > **Intégration n8n** : créer un workflow HTTP Request vers `http://firecrawl-api:3002/v0/scrape`
-> pour automatiser le scraping et indexer dans Chroma/SurfSense.
+> pour automatiser le scraping et indexer dans Chroma.
 
 ### 4.5 — Dokploy (PaaS / déploiement apps)
 
@@ -813,7 +813,7 @@ curl http://localhost:8000/api/v1/heartbeat
 ```
 
 > **Chroma** stocke les embeddings (vecteurs) pour la recherche sémantique.
-> Utilisé par SurfSense, Open Notebook, et Mem0.
+> Utilisé par Mem0.
 
 ### 8.3 — Mem0 (mémoire IA persistante)
 
@@ -830,20 +830,9 @@ curl http://localhost:8050/health
 ```
 
 > **Mem0** donne une mémoire persistante à tes outils IA.
-> LobeChat, SurfSense, Open Notebook, Paperclip peuvent tous y stocker/récupérer du contexte.
+> LobeChat, Paperclip peuvent tous y stocker/récupérer du contexte.
 
-### 8.4 — SurfSense
-
-```bash
-cd stack-configs/mac/surfsense
-docker compose up -d
-```
-
-1. Accéder à `http://localhost:3007`
-2. Connecter l'extension navigateur SurfSense
-3. Tes recherches web sont indexées dans Chroma (via Ollama)
-
-### 8.5 — LobeChat
+### 8.4 — LobeChat
 
 ```bash
 cd stack-configs/mac/lobechat
@@ -854,17 +843,7 @@ docker compose up -d
 2. LobeChat détecte automatiquement Ollama local
 3. Interface chat avec accès à tous tes modèles locaux
 
-### 8.6 — Open Notebook
-
-```bash
-cd stack-configs/mac/open-notebook
-docker compose up -d
-```
-
-1. Accéder à `http://localhost:8501`
-2. Importer des documents → l'IA les analyse et les indexe dans Chroma (via Ollama)
-
-### 8.7 — Paperclip (orchestrateur IA)
+### 8.5 — Paperclip (orchestrateur IA)
 
 ```bash
 cd stack-configs/mac/paperclip
@@ -874,7 +853,7 @@ docker compose up -d
 1. Accéder à `http://localhost:8060`
 2. Paperclip coordonne les agents IA (Ollama + Mem0)
 
-### 8.8 — Configurer Obsidian
+### 8.6 — Configurer Obsidian
 
 1. Ouvrir Obsidian → Create new vault
 2. Emplacement recommandé : `~/Documents/Obsidian`
@@ -898,9 +877,7 @@ git push -u origin main
 ✅ Ollama tourne nativement (Apple Silicon, ~3x plus rapide que Docker)
 ✅ Chroma stocke les embeddings (localhost:8000)
 ✅ Mem0 gère la mémoire IA (localhost:8050)
-✅ SurfSense indexe le web (localhost:3007)
 ✅ LobeChat interface les modèles (localhost:3210)
-✅ Open Notebook analyse les documents (localhost:8501)
 ✅ Paperclip orchestre les agents (localhost:8060)
 ✅ Obsidian configuré + sync Gitea
 ✅ 100% local — aucune clé API cloud
