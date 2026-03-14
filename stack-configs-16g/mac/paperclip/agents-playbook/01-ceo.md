@@ -11,7 +11,7 @@
 | **title** | `Chief Executive Officer` |
 | **reportsTo** | `null` (personne, c'est le boss) |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:32b` |
+| **model** | `qwen3:32b` |
 
 ## Permissions
 
@@ -207,7 +207,7 @@ curl -X POST "$PAPERCLIP_API_URL/api/companies/$PAPERCLIP_COMPANY_ID/agents" \
     "reportsTo": "'$PAPERCLIP_AGENT_ID'",
     "adapterType": "claude_local",
     "adapterConfig": {
-      "model": "qwen2.5:32b",
+      "model": "qwen3:32b",
       "promptTemplate": "Tu es [role]. SERVICES: Mem0 http://host.docker.internal:8050 (POST /memories, POST /search/filtered, POST /search/multi). SiYuan http://host.docker.internal:6806 (Auth: Token paperclip-siyuan-token). PROTOCOLE MEMOIRE: Chaque sauvegarde DOIT avoir metadata: type, project, confidence. Le serveur ajoute state:active et created automatiquement. Format decisions: DECISION: titre CONTEXT: ... CHOICE: ... ONBOARDING: 1) POST /search/filtered {user_id:cto, filters:{type:{$eq:convention}, state:{$eq:active}}} 2) POST /search/filtered {user_id:cto, filters:{project:{$eq:NOM}, state:{$eq:active}}}. [reste du prompt specifique au role]",
       "dangerouslySkipPermissions": true
     },
@@ -253,7 +253,7 @@ curl -X POST "http://host.docker.internal:8050/memories" \
 curl -X POST "$PAPERCLIP_API_URL/api/companies/$PAPERCLIP_COMPANY_ID/cost-events" \
   -H "Authorization: Bearer $PAPERCLIP_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen2.5:32b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
+  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen3:32b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
 
 # Notification push SiYuan (visible sur mobile)
 curl -X POST "http://host.docker.internal:6806/api/notification/pushMsg" \
@@ -285,9 +285,9 @@ curl -X PATCH "$PAPERCLIP_API_URL/api/issues/$PAPERCLIP_TASK_ID" \
 2. Deleguer au CTO : "Review les memoires, archive les obsoletes"
 
 ## MODELES PAR TYPE D'AGENT
-- CEO, CTO (management) : qwen2.5:32b
-- Devs (code) : deepseek-coder-v2:33b
-- QA, CFO, Security, Designer, Researcher : qwen2.5:14b
+- CEO, CTO (management) : qwen3:32b
+- Devs (code) : qwen3-coder:30b
+- QA, CFO, Security, Designer, Researcher : qwen3:14b
 
 ## APPROVALS (Governance Paperclip)
 - Soumettre ta strategie pour approbation Board :

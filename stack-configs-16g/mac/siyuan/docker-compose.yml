@@ -20,9 +20,13 @@ services:
             - siyuan_data:/siyuan/workspace
         environment:
             - SIYUAN_ACCESS_AUTH_CODE=${SIYUAN_TOKEN:-paperclip-siyuan-token}
-        command: ['--workspace=/siyuan/workspace/', '--accessAuthCode=${SIYUAN_TOKEN:- }']
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+        healthcheck:
+            test: ['CMD', 'curl', '-sf', 'http://localhost:6806/api/system/version']
+            interval: 30s
+            timeout: 5s
+            retries: 3
 
 volumes:
     siyuan_data:

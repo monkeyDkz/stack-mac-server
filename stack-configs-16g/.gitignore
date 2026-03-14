@@ -10,6 +10,7 @@ secrets.env
 # Fichiers .env avec les vrais mots de passe / cles API
 serveur/**/.env
 mac/**/.env
+mac/paperclip/.env
 
 # Hash de mots de passe utilisateurs (Authelia)
 # Le template est dans le repo, mais le fichier rempli ne doit pas etre commit

@@ -21,6 +21,11 @@
    - [QA](#qa-8-skills)
    - [Designer](#designer-7-skills)
    - [Researcher](#researcher-7-skills)
+   - [Growth Lead](#growth-lead-6-skills)
+   - [SEO Specialist](#seo-specialist-7-skills)
+   - [Content Writer](#content-writer-6-skills)
+   - [Data Analyst](#data-analyst-7-skills)
+   - [Sales Automation](#sales-automation-7-skills)
 4. [Matrice skills x agents](#matrice-skills-x-agents)
 5. [Protocole de discovery](#protocole-de-discovery)
 6. [Regles d'evolution des skills](#regles-devolution-des-skills)
@@ -59,6 +64,11 @@ Chaque skill est documente selon le schema suivant :
 | `recherche` | Veille, benchmarks, documentation, analyse | 7 |
 | `management` | Recrutement, arbitrage, reporting, coordination | 7 |
 | `finance` | Couts, budgets, ROI, audit financier | 5 |
+| `seo` | Keyword research, audits on-page, SERP, technical SEO | 7 |
+| `content` | Redaction articles, emails, landing pages, editorial | 6 |
+| `analytics` | Funnel analysis, cohortes, anomalies, dashboards business | 7 |
+| `sales` | Lead scoring, prospection, sequences, pipeline, win/loss | 7 |
+| `growth` | Strategie growth, orchestration, experiences, audit funnel | 6 |
 
 ---
 
@@ -1202,6 +1212,488 @@ Chaque skill est documente selon le schema suivant :
 
 ---
 
+### Growth Lead (6 skills)
+
+#### `growth-strategy`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Strategie growth |
+| **description** | Definir et ajuster la strategie d'acquisition, retention et monetisation |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `mem0`, `paperclip` |
+| **niveau** | `primaire` |
+| **input** | Objectifs business, metriques actuelles, insights Data Analyst |
+| **output** | Plan growth avec channels, budget, timeline, KPIs |
+| **exemple** | Le Growth Lead analyse les metriques du Data Analyst (taux de conversion 2%, bounce 60%) et definit une strategie : SEO sur 5 keywords transactionnels, sequence email nurturing, landing page optimisee. Il decompose en taches pour SEO, Content Writer et Sales. |
+
+#### `channel-orchestration`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Orchestration de channels |
+| **description** | Coordonner SEO, content, email et CRM comme un pipeline unifie |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `paperclip`, `mem0` |
+| **niveau** | `primaire` |
+| **input** | Initiative growth approuvee |
+| **output** | Pipeline de taches decompose et assigne (SEO→Content→Sales→Data) |
+| **exemple** | L'initiative "lancer le blog technique" est decomposee : SEO fait le keyword research (J1-3), Content Writer redige 4 articles (J4-10), Sales prepare une sequence email pour les lecteurs engages (J11-15), Data Analyst mesure le ROI (J20). |
+
+#### `experiment-design`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Design d'experiences |
+| **description** | Concevoir des A/B tests et experiences growth avec hypotheses mesurables |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Hypothese a tester, metriques de reference |
+| **output** | Plan d'experience (variantes, KPIs, duree, taille echantillon) |
+| **exemple** | Hypothese : "un CTA plus visible augmentera les signups de 20%". Le Growth Lead definit : variante A (CTA actuel), variante B (CTA rouge en sticky bar), KPI (taux de signup), duree (2 semaines), taille (500 visiteurs/variante). |
+
+#### `growth-audit`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Audit growth |
+| **description** | Analyser le funnel complet et identifier les bottlenecks de croissance |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Metriques funnel completes (Data Analyst) |
+| **output** | Rapport bottlenecks avec recommandations priorisees |
+| **exemple** | L'audit revele : trafic OK (5K/mois), mais conversion landing→signup a 1.5% (cible 3%). Le Growth Lead identifie le formulaire trop long comme bottleneck et recommande de passer de 6 a 3 champs. |
+
+#### `cross-agent-workflow`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Workflow cross-agent |
+| **description** | Decomposer les initiatives growth en taches assignees aux agents specialises |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `paperclip`, `mem0` |
+| **niveau** | `primaire` |
+| **input** | Initiative growth a executer |
+| **output** | Sous-taches assignees avec dependances, deadlines et KPIs |
+| **exemple** | Initiative "campagne Q2 acquisition". Le Growth Lead cree : tache SEO (competitor analysis + 10 briefs), tache Content (10 articles), tache Sales (sequence outbound), tache Data (dashboard ROI). Chaque tache a des criteres d'acceptation et des deadlines. |
+
+#### `memoire-growth`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Memoire growth |
+| **description** | Sauvegarder les strategies, resultats d'experiences et metriques de croissance |
+| **categorie** | `growth` |
+| **agents** | `growth-lead` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Strategie, resultat d'experience, metrique de croissance |
+| **output** | Memory dans Mem0 pour reference future et prise de decision |
+| **exemple** | Le Growth Lead sauvegarde le resultat de l'experience CTA : "le CTA rouge sticky bar a augmente les signups de 35% (vs hypothese 20%). Decision : deployer en production. Impact : +150 signups/mois attendus." |
+
+---
+
+### SEO Specialist (7 skills)
+
+#### `keyword-research`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Keyword research |
+| **description** | Identifier les keywords a fort potentiel avec volume, difficulte et intent |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl) |
+| **niveau** | `primaire` |
+| **input** | Niche, theme ou objectif business |
+| **output** | Liste keywords avec volume, difficulte, intent et clusters thematiques |
+| **exemple** | Pour le theme "gestion de projet IA", le SEO identifie : "outil gestion projet ia" (1.2K/mois, diff 35, transactionnel), "automatiser gestion projet" (800/mois, diff 28, informationnel), et 15 keywords secondaires groupes en 4 clusters. |
+
+#### `onpage-seo-audit`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Audit SEO on-page |
+| **description** | Auditer les titres, meta, structure Hn, maillage interne et schema markup |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl) |
+| **niveau** | `primaire` |
+| **input** | URL ou page a auditer |
+| **output** | Rapport audit avec score, issues et actions priorisees |
+| **exemple** | Audit de la page /pricing : title trop long (72 chars, max 60), meta description absente, H1 manquant, pas de schema Product, 3 liens internes (minimum 5 recommande). Score : 45/100. Plan d'action en 4 points. |
+
+#### `serp-monitoring`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | SERP monitoring |
+| **description** | Suivre les positions dans les resultats de recherche et detecter les variations |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl) |
+| **niveau** | `primaire` |
+| **input** | Keywords a suivre |
+| **output** | Rapport positions avec variations et alertes |
+| **exemple** | Suivi hebdomadaire : "gestion projet ia" passe de #8 a #5 (+3), "automatiser taches" de #12 a #15 (-3, alerte). Le SEO notifie le Growth Lead de la perte et recommande de renforcer le contenu avec des backlinks internes. |
+
+#### `competitor-seo-analysis`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Analyse SEO concurrentielle |
+| **description** | Analyser les strategies SEO des concurrents (keywords, structure, contenu) |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl) |
+| **niveau** | `secondaire` |
+| **input** | URL(s) concurrent(s) a analyser |
+| **output** | Analyse comparative (keywords, structure, gaps, opportunites) |
+| **exemple** | Analyse du concurrent X : 120 pages indexees (vs nos 30), fort sur "gestion de projet agile" (nous absents), faible sur "automatisation" (notre force). Opportunite : creer 10 pages sur les keywords ou X est absent. |
+
+#### `technical-seo`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | SEO technique |
+| **description** | Auditer la performance, crawlability, indexation et Core Web Vitals |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl, Umami) |
+| **niveau** | `secondaire` |
+| **input** | Site ou page a auditer techniquement |
+| **output** | Rapport technique avec metriques et actions correctives |
+| **exemple** | Audit technique : LCP 3.8s (cible <2.5s), CLS 0.15 (cible <0.1), 12 pages orphelines non linkees, sitemap.xml absent, robots.txt bloque /api/. Actions : optimiser images, ajouter sitemap, corriger robots.txt. |
+
+#### `content-brief-generation`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Generation de content briefs |
+| **description** | Produire des briefs SEO complets pour le Content Writer |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl) |
+| **niveau** | `primaire` |
+| **input** | Keyword cible, intent, objectif |
+| **output** | Brief complet (structure Hn, keywords secondaires, longueur, angle, concurrents) |
+| **exemple** | Brief pour "automatiser gestion projet" : H1 "Guide complet : automatiser sa gestion de projet en 2026", H2 sections (pourquoi, outils, etapes, ROI), 2000 mots, 8 keywords secondaires, angle pratique avec exemples, top 3 concurrents analyses. |
+
+#### `memoire-seo`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Memoire SEO |
+| **description** | Sauvegarder les keywords, audits, rankings et briefs dans la base de connaissances |
+| **categorie** | `seo` |
+| **agents** | `seo` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Resultat de keyword research, audit ou monitoring |
+| **output** | Memory dans Mem0 pour reference future |
+| **exemple** | Apres le keyword research Q2, le SEO sauvegarde la liste de 25 keywords avec leurs metriques, les clusters identifies et les priorites recommandees dans Mem0 pour que le Content Writer et le Growth Lead puissent les consulter. |
+
+---
+
+### Content Writer (6 skills)
+
+#### `blog-article-writing`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Redaction d'articles blog |
+| **description** | Rediger des articles SEO-optimises a partir des briefs SEO |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl, Gitea) |
+| **niveau** | `primaire` |
+| **input** | Brief SEO du SEO Specialist |
+| **output** | Article markdown SEO-optimise pousse dans Gitea |
+| **exemple** | A partir du brief "automatiser gestion projet", le Content Writer redige un article de 2200 mots, integre les 8 keywords secondaires naturellement, structure en H2/H3 conforme au brief, ajoute 3 exemples concrets et un CTA vers la page pricing. |
+
+#### `email-copywriting`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Email copywriting |
+| **description** | Rediger des emails marketing, nurturing et onboarding |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Objectif campagne, segment cible, etape du funnel |
+| **output** | Email avec subject line, preheader, body et CTA |
+| **exemple** | Email nurturing step 3 : subject "3 erreurs qui tuent votre productivite", preheader "et comment les eviter en 5 min", body avec storytelling + 3 tips concrets, CTA "Decouvrir notre solution" vers la landing page. |
+
+#### `landing-page-copy`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Copy landing page |
+| **description** | Rediger les textes de landing pages a forte conversion |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Offre, proposition de valeur, audience cible |
+| **output** | Copy complete (headline, sub-headline, features, CTA, FAQ, temoignages) |
+| **exemple** | Landing page pour l'offre Pro : headline "Automatisez votre gestion de projet en 5 minutes", sub "Rejoignez 500+ equipes qui gagnent 10h/semaine", 4 features avec icones, CTA "Essai gratuit 14 jours", FAQ 5 questions. |
+
+#### `content-repurposing`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Repurposing de contenu |
+| **description** | Adapter un contenu existant pour differents formats et canaux |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Article ou contenu source a adapter |
+| **output** | Variantes adaptees (thread LinkedIn, newsletter, tweets, infographie textuelle) |
+| **exemple** | L'article "Guide automatisation gestion de projet" est repurpose en : 1 thread LinkedIn (8 posts), 1 newsletter (version condensee 500 mots), 5 tweets avec les stats cles, 1 email pour la sequence nurturing. |
+
+#### `editorial-calendar`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Calendrier editorial |
+| **description** | Planifier et suivre le calendrier de publication |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Strategie growth, briefs disponibles, capacite de production |
+| **output** | Planning de publication avec deadlines, statuts et responsables |
+| **exemple** | Calendrier mars : semaine 1 — article "automatisation" (draft J3, review J5, publish J7), semaine 2 — 3 emails sequence nurturing, semaine 3 — landing page offre Pro, semaine 4 — repurposing des contenus du mois. |
+
+#### `memoire-content`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Memoire contenu |
+| **description** | Sauvegarder les articles, templates et performances dans la base de connaissances |
+| **categorie** | `content` |
+| **agents** | `content-writer` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Article redige, email, landing page ou learning redactionnel |
+| **output** | Memory dans Mem0 pour reference future |
+| **exemple** | Apres publication de l'article "automatisation", le Content Writer sauvegarde : titre, keyword, longueur, repo path, et un mois plus tard met a jour la memory avec les performances (2.5K vues, 3.2% CTR, 45 signups attribues). |
+
+---
+
+### Data Analyst (7 skills)
+
+#### `funnel-analysis`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Analyse de funnel |
+| **description** | Analyser chaque etape du funnel acquisition→conversion→retention |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Periode d'analyse, metriques sources (Umami, CRM, BillionMail) |
+| **output** | Rapport funnel avec taux de conversion par etape et bottlenecks |
+| **exemple** | Funnel mars : visiteurs 5.2K → inscrits 156 (3%) → actifs 89 (57%) → payants 12 (13.5%). Bottleneck : actifs→payants (13.5% vs cible 20%). Cause probable : onboarding trop complexe. Recommandation : simplifier les 3 premieres etapes. |
+
+#### `cross-service-correlation`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Correlation cross-services |
+| **description** | Correler les donnees Umami + Twenty CRM + BillionMail + Cal.com pour trouver des patterns |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Question business ou initiative growth a analyser |
+| **output** | Analyse correlee multi-sources avec conclusions actionables |
+| **exemple** | Correlation : les leads qui visitent la page pricing 3+ fois (Umami) ET ouvrent 2+ emails (BillionMail) ont un taux de conversion 4x superieur. Les meetings Cal.com avec ces leads convertissent a 65% vs 25% pour les autres. Recommandation : prioriser ces leads dans le scoring. |
+
+#### `cohort-analysis`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Analyse de cohortes |
+| **description** | Segmenter les utilisateurs par comportement et periode |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Critere de segmentation, periode d'analyse |
+| **output** | Segments identifies avec taille, comportements et retention |
+| **exemple** | Cohorte "inscrits fevrier" : 120 inscrits, retention J7 65%, retention J30 40%, retention J60 28%. Comparaison avec cohorte janvier : +5% sur J30. Cause : nouveau flow d'onboarding deploye en fevrier. |
+
+#### `anomaly-detection`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Detection d'anomalies |
+| **description** | Detecter les variations anormales dans les metriques business |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0`, `n8n` (ntfy) |
+| **niveau** | `primaire` |
+| **input** | Metriques courantes vs baselines stockees dans Mem0 |
+| **output** | Alertes anomalies avec contexte, impact et cause probable |
+| **exemple** | Anomalie detectee : trafic organique -35% sur les 24h (vs baseline 200 visiteurs/jour). Correle avec : aucun incident serveur (monitoring OK), pas de changement de contenu. Cause probable : update algorithme Google. Alerte envoyee au Growth Lead via ntfy. |
+
+#### `weekly-business-dashboard`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Dashboard business hebdomadaire |
+| **description** | Generer un rapport hebdomadaire consolide de toutes les sources business |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Automatique (schedule hebdomadaire) |
+| **output** | Dashboard consolide (Umami + CRM + BillionMail + Cal.com) |
+| **exemple** | Dashboard semaine 10 : Trafic 5.2K (+8%), Leads 23 (+15%), Deals en cours 8 (valeur $12K), Emails envoyes 450 (open 32%, click 8%), Meetings 6 (conversion 50%). Tendance globale : croissance soutenue. Alerte : taux de click emails en baisse. |
+
+#### `roi-attribution`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Attribution ROI |
+| **description** | Mesurer le retour sur investissement de chaque action growth |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Initiative growth + metriques avant/apres |
+| **output** | Rapport ROI avec cout, impact mesure et recommandation |
+| **exemple** | ROI campagne "blog technique" : cout (5 articles * 2h agent = 10h), impact (1.2K visiteurs organiques, 45 leads, 5 deals clos pour $3.5K), ROI = 350%. Recommandation : doubler la cadence de publication. |
+
+#### `memoire-analytics`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Memoire analytics |
+| **description** | Sauvegarder les rapports, baselines et insights business |
+| **categorie** | `analytics` |
+| **agents** | `data-analyst` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Rapport, baseline, anomalie ou insight |
+| **output** | Memory dans Mem0 pour reference et comparaison future |
+| **exemple** | Le Data Analyst sauvegarde la baseline hebdomadaire : visiteurs 5.2K, leads 23, pipeline $12K, emails open 32%. Cette baseline sera utilisee la semaine suivante pour detecter les anomalies et mesurer les tendances. |
+
+---
+
+### Sales Automation (7 skills)
+
+#### `lead-scoring`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Lead scoring |
+| **description** | Evaluer et prioriser les leads selon les signaux comportementaux et demographiques |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0`, `n8n` (Twenty CRM, Umami) |
+| **niveau** | `primaire` |
+| **input** | Donnees lead (source, comportement web, interactions email, profil) |
+| **output** | Score sur 100 + tier (hot/warm/cold) + next action recommandee |
+| **exemple** | Lead "Marie Martin" : visite pricing 3x (+20), telecharge whitepaper (+15), ouvre 5 emails (+10), entreprise >50 personnes (+15), secteur SaaS (+10). Score : 70/100, tier warm. Next action : envoyer email personnalise avec demo. |
+
+#### `outbound-prospecting`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Prospection outbound |
+| **description** | Identifier et qualifier les prospects via scraping et CRM |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0`, `n8n` (Firecrawl, Twenty CRM) |
+| **niveau** | `primaire` |
+| **input** | ICP (Ideal Customer Profile), marche cible |
+| **output** | Liste prospects qualifies avec approach strategy |
+| **exemple** | ICP : SaaS B2B, 20-200 employes, France. Le Sales scrape 3 directories via Firecrawl, identifie 25 prospects, les qualifie (10 hot, 8 warm, 7 cold), les ajoute dans Twenty CRM et prepare l'approach personnalisee pour les 10 hot. |
+
+#### `email-sequences`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Sequences email |
+| **description** | Concevoir et optimiser les sequences d'emails de nurturing et outreach |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0`, `n8n` (BillionMail) |
+| **niveau** | `primaire` |
+| **input** | Objectif, segment cible, etape du pipeline |
+| **output** | Sequence email avec timing, sujets, templates et metriques |
+| **exemple** | Sequence "nurture warm leads" en 5 etapes : J0 intro personnalisee, J3 case study, J7 invitation webinar, J14 offre speciale, J21 derniere chance. Metriques cibles : open >30%, reply >10%, conversion >5%. |
+
+#### `pipeline-management`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Gestion du pipeline |
+| **description** | Gerer et optimiser le pipeline de vente dans Twenty CRM |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0`, `n8n` (Twenty CRM) |
+| **niveau** | `primaire` |
+| **input** | Etat actuel du CRM, objectifs de vente |
+| **output** | Pipeline mis a jour avec forecast et actions prioritaires |
+| **exemple** | Pipeline Q1 : 15 deals en cours (valeur $45K), 5 en negociation ($20K, close prevu mars), 3 bloques (relancer avec nouvelle offre). Forecast : $25K closes ce mois (confiance 70%). Actions : relancer les 3 bloques, accelerer les 5 en nego. |
+
+#### `meeting-to-deal`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Meeting to deal |
+| **description** | Convertir les meetings Cal.com en deals CRM avec follow-up |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0`, `n8n` (Cal.com, Twenty CRM) |
+| **niveau** | `primaire` |
+| **input** | Booking Cal.com avec details du prospect |
+| **output** | Deal cree dans CRM + follow-up planifie |
+| **exemple** | Meeting "Demo 30min" avec Marie Martin (marie@acme.com). Le Sales cree le deal dans Twenty CRM (stage: qualification, valeur estimee: $2K/mois), planifie un follow-up a J+2 avec proposition commerciale, et met a jour le scoring. |
+
+#### `win-loss-analysis`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Analyse win/loss |
+| **description** | Analyser les deals gagnes et perdus pour ameliorer le processus commercial |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0` |
+| **niveau** | `secondaire` |
+| **input** | Deal clos (gagne ou perdu) avec historique des interactions |
+| **output** | Analyse facteurs cles + recommandations d'amelioration |
+| **exemple** | Analyse Q1 : 8 deals gagnes (facteurs : demo personnalisee, suivi rapide, offre sur mesure), 5 perdus (facteurs : prix trop eleve 3x, concurrent 2x). Recommandation : creer une offre decouverte a prix reduit, accelerer le suivi post-demo a <24h. |
+
+#### `memoire-sales`
+
+| Champ | Valeur |
+|---|---|
+| **nom** | Memoire sales |
+| **description** | Sauvegarder les scoring models, sequences, deals et analyses dans la base de connaissances |
+| **categorie** | `sales` |
+| **agents** | `sales-automation` |
+| **outils-requis** | `mem0` |
+| **niveau** | `primaire` |
+| **input** | Lead score, sequence, deal ou analyse win/loss |
+| **output** | Memory dans Mem0 pour reference et optimisation continue |
+| **exemple** | Le Sales sauvegarde l'analyse win/loss Q1 avec les facteurs de succes et d'echec, les metriques de conversion par etape du pipeline, et les recommandations d'ajustement du scoring model. Le Growth Lead consultera ces insights pour la strategie Q2. |
+
+---
+
 ## Matrice skills x agents
 
 ### Categorie : `code` (22 skills)
@@ -1327,6 +1819,64 @@ Chaque skill est documente selon le schema suivant :
 | `audit-financier` | | | | X | | | | | | | |
 | `memoire-financiere` | | | | X | | | | | | | |
 
+### Categorie : `growth` (6 skills)
+
+| Skill | growth-lead | seo | content-writer | data-analyst | sales-automation |
+|---|---|---|---|---|---|
+| `growth-strategy` | X | | | | |
+| `channel-orchestration` | X | | | | |
+| `experiment-design` | X | | | | |
+| `growth-audit` | X | | | | |
+| `cross-agent-workflow` | X | | | | |
+| `memoire-growth` | X | | | | |
+
+### Categorie : `seo` (7 skills)
+
+| Skill | growth-lead | seo | content-writer | data-analyst | sales-automation |
+|---|---|---|---|---|---|
+| `keyword-research` | | X | | | |
+| `onpage-seo-audit` | | X | | | |
+| `serp-monitoring` | | X | | | |
+| `competitor-seo-analysis` | | X | | | |
+| `technical-seo` | | X | | | |
+| `content-brief-generation` | | X | | | |
+| `memoire-seo` | | X | | | |
+
+### Categorie : `content` (6 skills)
+
+| Skill | growth-lead | seo | content-writer | data-analyst | sales-automation |
+|---|---|---|---|---|---|
+| `blog-article-writing` | | | X | | |
+| `email-copywriting` | | | X | | |
+| `landing-page-copy` | | | X | | |
+| `content-repurposing` | | | X | | |
+| `editorial-calendar` | | | X | | |
+| `memoire-content` | | | X | | |
+
+### Categorie : `analytics` (7 skills)
+
+| Skill | growth-lead | seo | content-writer | data-analyst | sales-automation |
+|---|---|---|---|---|---|
+| `funnel-analysis` | | | | X | |
+| `cross-service-correlation` | | | | X | |
+| `cohort-analysis` | | | | X | |
+| `anomaly-detection` | | | | X | |
+| `weekly-business-dashboard` | | | | X | |
+| `roi-attribution` | | | | X | |
+| `memoire-analytics` | | | | X | |
+
+### Categorie : `sales` (7 skills)
+
+| Skill | growth-lead | seo | content-writer | data-analyst | sales-automation |
+|---|---|---|---|---|---|
+| `lead-scoring` | | | | | X |
+| `outbound-prospecting` | | | | | X |
+| `email-sequences` | | | | | X |
+| `pipeline-management` | | | | | X |
+| `meeting-to-deal` | | | | | X |
+| `win-loss-analysis` | | | | | X |
+| `memoire-sales` | | | | | X |
+
 ---
 
 ## Protocole de discovery
@@ -1442,11 +1992,12 @@ Pour une recherche transversale (tous les agents) :
 
 | Metrique | Valeur |
 |---|---|
-| **Nombre total de skills** | 78 |
-| **Nombre d'agents** | 11 |
-| **Moyenne de skills par agent** | 7.1 |
+| **Nombre total de skills** | 111 |
+| **Nombre d'agents** | 16 |
+| **Moyenne de skills par agent** | 6.9 |
 | **Agent le plus polyvalent** | CTO (10 skills) |
 | **Categorie la plus fournie** | `code` (22 skills) |
 | **Skills partages (multi-agents)** | 8 |
-| **Skills primaires** | 58 |
-| **Skills secondaires** | 20 |
+| **Skills primaires** | 82 |
+| **Skills secondaires** | 29 |
+| **Nouvelles categories (growth)** | `seo` (7), `content` (6), `analytics` (7), `sales` (7), `growth` (6) |

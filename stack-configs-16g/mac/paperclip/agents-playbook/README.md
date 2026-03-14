@@ -168,7 +168,7 @@ Voir [20-siyuan-bootstrap.md](./20-siyuan-bootstrap.md) pour les details.
 
 | Role | Modele | RAM | Pourquoi |
 |------|--------|-----|----------|
-| CEO, CTO | `qwen2.5:32b` | ~20GB | Raisonnement, tool calling, management |
-| Devs | `deepseek-coder-v2:33b` | ~20GB | Code haute qualite |
-| CPO, CFO, QA, Security, Designer, Researcher | `qwen2.5:14b` | ~9GB | Taches structurees |
+| CEO, CTO | `qwen3:32b` | ~20GB | Raisonnement, tool calling, management |
+| Devs | `qwen3-coder:30b` | ~20GB | Code haute qualite |
+| CPO, CFO, QA, Security, Designer, Researcher | `qwen3:14b` | ~9GB | Taches structurees |
 | Embeddings | `nomic-embed-text` | 274MB | Mem0, Chroma |

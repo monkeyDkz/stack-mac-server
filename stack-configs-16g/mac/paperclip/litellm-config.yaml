@@ -1,17 +1,55 @@
 # ============================================
-# LiteLLM Proxy — Traduit API Anthropic → Ollama
-# Permet à Claude Code (Paperclip) d'utiliser des modèles locaux
+# LiteLLM Proxy — Route les agents vers Ollama
+# ============================================
+# 3 tiers de modeles pour 48GB RAM (M5 Pro) :
+#   T1 Strategie : qwen3:32b      (~20GB) — CEO, CTO, Growth Lead
+#   T2 Code      : qwen3-coder:30b (~19GB) — Lead Backend, Lead Frontend, DevOps
+#   T2 Code alt  : devstral:24b    (~14GB) — Alternative code plus legere
+#   T3 Execution : qwen3:14b      (~9GB)  — CPO, CFO, QA, Security, Designer, Researcher, SEO, Content Writer, Data Analyst, Sales
+#   Fallback     : qwen3:8b       (~5GB)  — Fallback ultra-leger
+#   Embed        : nomic-embed-text (~0.3GB) — Mem0, Chroma
+#
+# Ollama charge max 2 modeles simultanement :
+#   OLLAMA_MAX_LOADED_MODELS=2
+#   Combo typique : T1 (20GB) + T3 (9GB) = 29GB, reste 19GB pour macOS
 # ============================================
 
 model_list:
-  - model_name: qwen2.5-coder
+  # ---- T1 : Strategie & Raisonnement ----
+  # CEO, CTO, Growth Lead
+  # Meilleur raisonnement + tool calling natif + 100 langues
+  - model_name: qwen3:32b
     litellm_params:
-      model: ollama/qwen2.5-coder
+      model: ollama/qwen3:32b
       api_base: http://host.docker.internal:11434
 
-  - model_name: llama3.2:3b
+  # ---- T2 : Code ----
+  # Lead Backend, Lead Frontend, DevOps
+  # Meilleur code open-source, MoE (3.3B actifs), 256K contexte, agentic coding
+  - model_name: qwen3-coder:30b
     litellm_params:
-      model: ollama/llama3.2:3b
+      model: ollama/qwen3-coder:30b
+      api_base: http://host.docker.internal:11434
+
+  # Alternative code — plus leger (14GB), SWE-Bench 46.8%, 128K contexte
+  - model_name: devstral:24b
+    litellm_params:
+      model: ollama/devstral:24b
+      api_base: http://host.docker.internal:11434
+
+  # ---- T3 : Execution & Taches structurees ----
+  # CPO, CFO, QA, Security, Designer, Researcher, SEO, Content Writer, Data Analyst, Sales
+  # Tool calling natif, meme famille que T1, multilingue
+  - model_name: qwen3:14b
+    litellm_params:
+      model: ollama/qwen3:14b
+      api_base: http://host.docker.internal:11434
+
+  # ---- Fallback ultra-leger ----
+  # Si RAM saturee ou taches triviales
+  - model_name: qwen3:8b
+    litellm_params:
+      model: ollama/qwen3:8b
       api_base: http://host.docker.internal:11434
 
 general_settings:

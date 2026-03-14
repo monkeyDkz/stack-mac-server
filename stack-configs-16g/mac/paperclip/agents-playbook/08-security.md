@@ -11,7 +11,7 @@
 | **title** | `Security Engineer` |
 | **reportsTo** | `{cto_agent_id}` |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:14b` |
+| **model** | `qwen3:14b` |
 
 ## Permissions
 
@@ -200,7 +200,7 @@ curl -X POST "http://host.docker.internal:8050/memories" \
 curl -X POST "$PAPERCLIP_API_URL/api/companies/$PAPERCLIP_COMPANY_ID/cost-events" \
   -H "Authorization: Bearer $PAPERCLIP_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen2.5:14b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
+  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen3:14b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
 
 # Notification push SiYuan pour alertes securite
 curl -X POST "http://host.docker.internal:6806/api/notification/pushMsg" \

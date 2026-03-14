@@ -18,6 +18,11 @@ services:
       MEM0_CONFIG: /app/config.yaml
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8050/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   mem0_data:

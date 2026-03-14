@@ -88,7 +88,6 @@ install_brew node
 install_brew netbird
 
 # Apps GUI
-install_brew obsidian cask
 install_brew keepassxc cask
 install_brew localsend cask
 
@@ -229,12 +228,10 @@ echo ""
 echo "Outils natifs :"
 echo ""
 echo "  ollama           — LLM local (Apple Silicon)"
-echo "  Obsidian         — Notes / second brain"
 echo "  KeePassXC        — Mots de passe"
 echo "  LocalSend        — Transfert fichiers"
 echo ""
 echo "Prochaines etapes :"
 echo "  1. Configurer NetBird : sudo netbird up"
-echo "  2. Configurer Obsidian (vault + sync Gitea)"
-echo "  3. Ouvrir LobeChat (localhost:3210) — Ollama detecte automatiquement"
+echo "  2. Ouvrir LobeChat (localhost:3210) — Ollama detecte automatiquement"
 echo ""

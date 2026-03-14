@@ -20,7 +20,7 @@
 │  │  (Docker)    │  │ (Docker)  │                                │
 │  └──────────────┘  └──────────┘                                │
 │                                                                 │
-│  Outils natifs : Obsidian, KeePassXC, LocalSend, NetBird       │
+│  Outils natifs : KeePassXC, LocalSend, NetBird                 │
 └─────────────────────────────────────────────────────────────────┘
           │
           │ VPN (NetBird)

@@ -1,6 +1,6 @@
 # Workflows n8n pour les agents — Reference complete
 
-Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via Paperclip) aux services d'infrastructure reels (serveur via n8n a `https://n8n.home`).
+Ce document definit les 21 workflows n8n qui connectent les agents IA (Mac via Paperclip) aux services d'infrastructure reels (serveur via n8n a `https://n8n.home`).
 
 ---
 
@@ -10,7 +10,7 @@ Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via P
 2. [Authentification](#2-authentification)
 3. [Pattern webhook unique](#3-pattern-webhook-unique)
 4. [User IDs systeme dans Mem0](#4-user-ids-systeme-dans-mem0)
-5. [Les 19 workflows](#5-les-19-workflows)
+5. [Les 21 workflows](#5-les-21-workflows)
    - [5.1 agent-deploy](#51-agent-deploy)
    - [5.2 agent-notify](#52-agent-notify)
    - [5.3 agent-scrape](#53-agent-scrape)
@@ -30,6 +30,8 @@ Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via P
    - [5.17 siyuan-lifecycle-sync](#517-siyuan-lifecycle-sync)
    - [5.18 siyuan-weekly-digest](#518-siyuan-weekly-digest)
    - [5.19 ai-agent-workflow](#519-ai-agent-workflow)
+   - [5.20 agent-email-sequence](#520-agent-email-sequence)
+   - [5.21 agent-lead-score](#521-agent-lead-score)
 6. [Gestion des erreurs](#6-gestion-des-erreurs)
 
 ---
@@ -45,7 +47,9 @@ Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via P
 │   │                                           │                         │
 │   │   CEO ─ CTO ─ CPO ─ CFO                  │                         │
 │   │   Backend ─ Frontend ─ DevOps             │                         │
-│   │   Security ─ QA ─ Designer ─ Researcher   │                         │
+│   │   Security ─ QA ─ Designer ─ Researcher   │
+│   │   Growth Lead ─ SEO ─ Content Writer      │
+│   │   Data Analyst ─ Sales Automation          │                         │
 │   └────────────────────┬─────────────────────┘                         │
 │                        │                                                │
 │          curl POST     │   (webhook sortant)                           │
@@ -67,7 +71,7 @@ Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via P
 │   │             n8n (port 5678)               │                         │
 │   │         https://n8n.home                  │                         │
 │   │                                           │                         │
-│   │   19 workflows :                          │                         │
+│   │   21 workflows :                          │                         │
 │   │   agent-deploy, agent-notify,             │                         │
 │   │   agent-scrape, agent-git,                │                         │
 │   │   agent-crm-sync, agent-analytics,        │                         │
@@ -76,7 +80,8 @@ Ce document definit les 19 workflows n8n qui connectent les agents IA (Mac via P
 │   │   security-alert, backup-report,          │                         │
 │   │   memory-to-siyuan, siyuan-dashboards,   │                         │
 │   │   siyuan-lifecycle-sync,                  │                         │
-│   │   siyuan-weekly-digest, ai-agent-workflow │                         │
+│   │   siyuan-weekly-digest, ai-agent-workflow,│                         │
+│   │   agent-email-sequence, agent-lead-score  │                         │
 │   └────────────────────┬─────────────────────┘                         │
 │                        │                                                │
 │          ┌─────────────┼─────────────────────────────┐                 │
@@ -924,6 +929,8 @@ curl -X POST "http://host.docker.internal:8050/search/filtered" \
 | **Lead Frontend** | designer, qa |
 | **DevOps** | lead-backend, lead-frontend, security |
 | **Security** | devops, lead-backend, lead-frontend |
+| **Growth Lead** | seo, content-writer, data-analyst, sales-automation |
+| **Sales Automation** | growth-lead |
 
 #### Etapes de traitement dans n8n
 
@@ -1544,7 +1551,7 @@ curl -X POST "http://host.docker.internal:6806/api/notification/pushMsg" \
 
 ```
 Trigger: Paperclip webhook (task assigned)
-  → AI Agent node (Ollama qwen2.5:14b via LangChain)
+  → AI Agent node (Ollama qwen3:14b via LangChain)
     Tools disponibles:
       - mem0_search: POST Mem0 /search/filtered
       - mem0_save: POST Mem0 /memories
@@ -1556,7 +1563,7 @@ Trigger: Paperclip webhook (task assigned)
   → Result stored in Mem0 + Paperclip comment + SiYuan doc
 ```
 
-Ce workflow permet a n8n d'agir comme un agent autonome capable de rechercher dans les bases de connaissances (Mem0, SiYuan), de prendre des decisions basees sur le contexte accumule, de publier les resultats dans SiYuan, et de mettre a jour les taches Paperclip. Contrairement aux autres workflows qui executent une sequence fixe, celui-ci utilise un LLM (Ollama qwen2.5:14b) via LangChain pour determiner dynamiquement les actions a effectuer.
+Ce workflow permet a n8n d'agir comme un agent autonome capable de rechercher dans les bases de connaissances (Mem0, SiYuan), de prendre des decisions basees sur le contexte accumule, de publier les resultats dans SiYuan, et de mettre a jour les taches Paperclip. Contrairement aux autres workflows qui executent une sequence fixe, celui-ci utilise un LLM (Ollama qwen3:14b) via LangChain pour determiner dynamiquement les actions a effectuer.
 
 #### Etapes de traitement dans n8n
 
@@ -1619,6 +1626,162 @@ curl -X PATCH "http://host.docker.internal:8060/api/issues/PAPER-100" \
 - Commentaire ajoute sur la tache Paperclip avec le resume
 - Tache marquee comme terminee dans Paperclip
 - Document optionnel cree dans SiYuan si le resultat le justifie
+
+---
+
+### 5.20 agent-email-sequence
+
+**Description** : Execute une sequence d'emails de vente via BillionMail, declenchee par l'agent Sales Automation. Gere le timing entre les etapes et le suivi des metriques.
+
+**Trigger** : Webhook agent (event: `email-sequence`)
+
+**Agents qui l'utilisent** : Sales Automation
+
+**Mem0 user_id ecrit** : Aucun (les metriques sont ecrites par Sales Automation)
+
+#### Payload attendu
+
+```json
+{
+  "event": "email-sequence",
+  "agent": "sales-automation",
+  "task_id": "PAPER-200",
+  "payload": {
+    "contact_email": "prospect@example.com",
+    "sequence_id": "nurture-v1",
+    "stage": "step1"
+  }
+}
+```
+
+#### Etapes de traitement dans n8n
+
+1. Webhook trigger → recoit le payload de Sales Automation
+2. Code node → determiner le template email et le timing selon `sequence_id` et `stage`
+3. HTTP Request → POST BillionMail `/api/send` — envoyer l'email au contact
+4. Wait node → attendre le delai configure entre les etapes (ex: 3 jours)
+5. HTTP Request → GET BillionMail `/api/campaigns/{id}/stats` — verifier open/click
+6. If opened → HTTP Request → POST Mem0 `/memories` — sauvegarder le signal sous `crm`
+7. If not opened et etape suivante disponible → boucler sur l'etape suivante
+8. HTTP Request → POST ntfy — notifier Sales Automation du resultat
+
+#### Exemple curl
+
+```bash
+# Etape 3 : Envoyer l'email via BillionMail
+curl -X POST "https://mail.home/api/send" \
+  -H "Authorization: Bearer $BILLIONMAIL_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "prospect@example.com",
+    "template_id": "nurture-v1-step1",
+    "subject": "Decouvrez comment [proposition de valeur]",
+    "variables": {"name": "Marie", "company": "Acme"}
+  }'
+
+# Etape 5 : Verifier les stats
+curl -s "https://mail.home/api/campaigns/last/stats" \
+  -H "Authorization: Bearer $BILLIONMAIL_TOKEN"
+```
+
+#### Sortie / effets de bord
+
+- Email envoye via BillionMail au contact
+- Signal d'engagement (open/click) sauvegarde dans Mem0 channel `crm`
+- Etape suivante de la sequence declenchee automatiquement apres le delai
+- Sales Automation notifie du resultat pour ajuster le scoring
+
+---
+
+### 5.21 agent-lead-score
+
+**Description** : Calcule et met a jour le score d'un lead dans Twenty CRM en se basant sur les signaux comportementaux (Umami) et les interactions (BillionMail, Cal.com).
+
+**Trigger** : Webhook agent (event: `lead-score`)
+
+**Agents qui l'utilisent** : Sales Automation
+
+**Mem0 user_id ecrit** : `crm` (mise a jour du score dans le channel CRM)
+
+#### Payload attendu
+
+```json
+{
+  "event": "lead-score",
+  "agent": "sales-automation",
+  "task_id": "PAPER-201",
+  "payload": {
+    "contact_email": "prospect@example.com",
+    "score": 85,
+    "tier": "hot",
+    "signals": [
+      "visited pricing page 3x",
+      "downloaded whitepaper",
+      "opened 5 emails"
+    ]
+  }
+}
+```
+
+#### Etapes de traitement dans n8n
+
+1. Webhook trigger → recoit le payload de Sales Automation
+2. HTTP Request → GET Twenty CRM `/api/contacts?email={email}` — trouver le contact
+3. HTTP Request → PATCH Twenty CRM `/api/contacts/{id}` — mettre a jour le score et le tier
+4. HTTP Request → POST Twenty CRM `/api/activities` — logger l'activite de scoring
+5. HTTP Request → POST Mem0 `/memories` — sauvegarder le score dans le channel `crm`
+6. If tier == "hot" → HTTP Request → POST ntfy — alerter pour action immediate
+
+#### Exemple curl
+
+```bash
+# Etape 2 : Trouver le contact dans Twenty CRM
+curl -s "https://crm.home/api/contacts?email=prospect@example.com" \
+  -H "Authorization: Bearer $TWENTY_TOKEN"
+
+# Etape 3 : Mettre a jour le score
+curl -X PATCH "https://crm.home/api/contacts/CONTACT_ID" \
+  -H "Authorization: Bearer $TWENTY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customFields": {
+      "lead_score": 85,
+      "lead_tier": "hot",
+      "last_scored": "2026-03-12T10:00:00Z"
+    }
+  }'
+
+# Etape 4 : Logger l'activite
+curl -X POST "https://crm.home/api/activities" \
+  -H "Authorization: Bearer $TWENTY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contact_id": "CONTACT_ID",
+    "type": "scoring",
+    "note": "Lead score updated: 85 (hot). Signals: visited pricing 3x, downloaded whitepaper, opened 5 emails."
+  }'
+
+# Etape 5 : Sauvegarder dans Mem0 channel crm
+curl -X POST "http://host.docker.internal:8050/memories" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "CRM: Lead score update — prospect@example.com score 85 (hot). Signaux: visited pricing 3x, downloaded whitepaper, opened 5 emails. Action: outreach immediat.",
+    "user_id": "crm",
+    "metadata": {
+      "type": "decision",
+      "project": "pipeline",
+      "confidence": "validated",
+      "tags": "lead-score,hot,sales"
+    }
+  }'
+```
+
+#### Sortie / effets de bord
+
+- Score et tier mis a jour dans Twenty CRM
+- Activite de scoring loggee dans CRM
+- Score sauvegarde dans Mem0 channel `crm` pour consultation par les agents
+- Notification ntfy si le lead est "hot" (action immediate requise)
 
 ---
 
@@ -1699,3 +1862,5 @@ Quand n8n tente d'ecrire dans Mem0 et echoue :
 | 17 | siyuan-lifecycle-sync | Webhook Mem0 | Mem0 | Aucun | SiYuan |
 | 18 | siyuan-weekly-digest | Schedule dimanche 20h | Automatique | Aucun | Mem0, SiYuan |
 | 19 | ai-agent-workflow | Webhook Paperclip | Paperclip | `n8n-ai-agent` | Mem0, SiYuan, Paperclip, Ollama |
+| 20 | agent-email-sequence | Webhook agent | Sales Automation | Aucun | BillionMail, Mem0, ntfy |
+| 21 | agent-lead-score | Webhook agent | Sales Automation | `crm` | Twenty CRM, Mem0, ntfy |

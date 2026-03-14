@@ -1,126 +1,134 @@
-# Configuration des modeles LiteLLM
+# Configuration des modeles — MacBook Pro M5 Pro 48GB
 
-## Config pour 48GB RAM
-
-### Modeles a installer sur Ollama
+## Modeles a installer sur Ollama
 
 ```bash
-# Modeles de management/raisonnement (CEO, CTO, CPO)
-ollama pull qwen2.5:32b
+# T1 — Strategie & Raisonnement (CEO, CTO, Growth Lead)
+ollama pull qwen3:32b             # ~20GB RAM
 
-# Modeles de code (Lead Backend, Lead Frontend, DevOps)
-ollama pull deepseek-coder-v2:33b
-# OU alternative :
-ollama pull qwen2.5-coder:32b
+# T2 — Code (Lead Backend, Lead Frontend, DevOps)
+ollama pull qwen3-coder:30b       # ~19GB RAM — MoE, 256K contexte, agentic coding
+ollama pull devstral:24b          # ~14GB RAM — Alternative, SWE-Bench 46.8%
 
-# Modeles legers (QA, CFO, Security, Designer, Researcher)
-ollama pull qwen2.5:14b
+# T3 — Execution (CPO, CFO, QA, Security, Designer, Researcher, SEO, Content Writer, Data Analyst, Sales)
+ollama pull qwen3:14b             # ~9GB RAM
 
-# Modele basique (taches ponctuelles)
-ollama pull llama3.1:8b
+# Fallback ultra-leger
+ollama pull qwen3:8b              # ~5GB RAM
 
-# Embeddings (mem0, RAG)
-ollama pull nomic-embed-text
-```
-
-### litellm-config.yaml pour 48GB
-
-```yaml
-model_list:
-  # Management / Raisonnement - CEO, CTO, CPO
-  - model_name: qwen2.5:32b
-    litellm_params:
-      model: ollama/qwen2.5:32b
-      api_base: http://host.docker.internal:11434
-
-  # Code - Lead Backend, Lead Frontend, DevOps
-  - model_name: deepseek-coder-v2:33b
-    litellm_params:
-      model: ollama/deepseek-coder-v2:16b
-      api_base: http://host.docker.internal:11434
-
-  # Code alternatif
-  - model_name: qwen2.5-coder:32b
-    litellm_params:
-      model: ollama/qwen2.5-coder:32b
-      api_base: http://host.docker.internal:11434
-
-  # Taches structurees - QA, CFO, Security, Designer, Researcher
-  - model_name: qwen2.5:14b
-    litellm_params:
-      model: ollama/qwen2.5:14b
-      api_base: http://host.docker.internal:11434
-
-  # Taches simples / fallback
-  - model_name: llama3.1:8b
-    litellm_params:
-      model: ollama/llama3.1:8b
-      api_base: http://host.docker.internal:11434
-
-general_settings:
-  drop_params: true
+# Embeddings (Mem0, Chroma)
+ollama pull nomic-embed-text      # ~0.3GB RAM
 ```
 
 ## Allocation des modeles par agent
 
-| Agent | Modele | Taille RAM | Justification |
-|-------|--------|-----------|---------------|
-| CEO | `qwen2.5:32b` | ~20GB | Besoin de raisonnement complexe, tool calling, delegation |
-| CTO | `qwen2.5:32b` | ~20GB | Architecture, decisions techniques, recrutement |
-| CPO | `qwen2.5:14b` | ~9GB | Specs produit, priorisation (moins de tool calling) |
-| CFO | `qwen2.5:14b` | ~9GB | Analyse de couts, rapports (taches structurees) |
-| Lead Backend | `deepseek-coder-v2:33b` | ~20GB | Code backend de haute qualite |
-| Lead Frontend | `deepseek-coder-v2:33b` | ~20GB | Code frontend de haute qualite |
-| DevOps | `deepseek-coder-v2:33b` | ~20GB | Dockerfiles, CI/CD, scripts infra |
-| Security | `qwen2.5:14b` | ~9GB | Audit de code, analyse (pattern matching) |
-| QA | `qwen2.5:14b` | ~9GB | Tests, review, rapports de bugs |
-| Designer | `qwen2.5:14b` | ~9GB | Specs textuelles, wireframes ASCII |
-| Researcher | `qwen2.5:14b` | ~9GB | Recherche, comparaison, documentation |
+### T1 — Strategie & Raisonnement (`qwen3:32b`, ~20GB)
 
-## Note sur le fonctionnement Ollama
+| Agent | Justification |
+|-------|---------------|
+| **CEO** | Raisonnement complexe, delegation, decisions strategiques, tool calling |
+| **CTO** | Architecture, decisions techniques, decomposition de taches, tool calling |
+| **Growth Lead** | Coordination equipe growth (4 agents), strategie acquisition, tool calling |
 
-Ollama **charge un seul modele a la fois en memoire** par defaut.
-- Si un agent utilise `qwen2.5:32b` et qu'un autre demande `deepseek-coder-v2:33b`, Ollama decharge le premier et charge le second
-- Temps de switch : ~10-30 secondes
-- Pour charger 2 modeles en parallele, configurer `OLLAMA_MAX_LOADED_MODELS=2` (necessite assez de RAM)
+Pourquoi `qwen3:32b` :
+- Meilleur raisonnement open-source a cette taille (surpasse Qwen2.5, DeepSeek-R1 en tool calling)
+- Tool calling natif (indispensable pour la delegation via Paperclip)
+- 100+ langues (francais natif)
+- Suffisamment gros pour comprendre des contextes complexes multi-agents
 
-### Pour 48GB avec 2 modeles simultanees :
+### T2 — Code (`qwen3-coder:30b` / `devstral:24b`)
+
+| Agent | Modele principal | Modele alternatif | Justification |
+|-------|-----------------|-------------------|---------------|
+| **Lead Backend** | `qwen3-coder:30b` | `devstral:24b` | Code backend haute qualite, agentic coding |
+| **Lead Frontend** | `qwen3-coder:30b` | `devstral:24b` | Code frontend, composants React/Vue |
+| **DevOps** | `qwen3-coder:30b` | `devstral:24b` | Dockerfiles, CI/CD, scripts infra |
+
+Pourquoi `qwen3-coder:30b` (principal) :
+- Le plus recent (2025), optimise SWE-Bench
+- Architecture MoE : 30B params totaux mais seulement 3.3B actifs → rapide
+- 256K contexte natif (extensible 1M) → peut lire des codebases entieres
+- Concu specifiquement pour l'agentic coding (exploration + multi-file edit)
+
+Pourquoi `devstral:24b` (alternatif) :
+- SWE-Bench 46.8% (bat Claude 3.5 Haiku)
+- Plus leger (~14GB vs ~19GB) → permet dual-loading avec T1 ou T3
+- 128K contexte
+- Licence Apache 2.0
+- Ideal pour les taches code plus courtes ou quand la RAM est tendue
+
+### T3 — Execution (`qwen3:14b`, ~9GB)
+
+| Agent | Justification |
+|-------|---------------|
+| **CPO** | Specs produit, PRD, priorisation |
+| **CFO** | Analyse de couts, rapports financiers |
+| **Security** | Audit de code, analyse de vulnerabilites |
+| **QA** | Tests, review de code, rapports de bugs |
+| **Designer** | Specs textuelles, wireframes ASCII |
+| **Researcher** | Recherche, veille, comparaisons, documentation |
+| **SEO Specialist** | Analyse SEO, mots-cles, recommandations |
+| **Content Writer** | Redaction articles, copy, contenu marketing |
+| **Data Analyst** | Analyse de donnees, rapports, metriques |
+| **Sales Automation** | Pipeline commercial, sequences email, CRM |
+
+Pourquoi `qwen3:14b` :
+- Meme famille que T1 (coherence des outputs)
+- Tool calling natif
+- Multilingue (francais)
+- Leger (~9GB) → peut coexister avec T1 (20+9=29GB) ou T2 (19+9=28GB)
+- Suffisant pour les taches structurees qui ne necessitent pas de raisonnement profond
+
+## Gestion memoire Ollama
+
+### Configuration recommandee
+
 ```bash
-# Dans le .zshrc ou le docker-compose d'Ollama
+# Dans ~/.zshrc ou launchd d'Ollama
 export OLLAMA_MAX_LOADED_MODELS=2
-# Permet : 1 modele 32b + 1 modele 14b en meme temps
-# 20GB + 9GB = 29GB, reste 19GB pour le systeme
+export OLLAMA_KEEP_ALIVE=10m       # Garde le modele en RAM 10 min apres derniere requete
 ```
 
-## Config pour 8GB RAM (machine actuelle)
+### Combos de chargement possibles
 
-### Option locale (tres limitee)
-```yaml
-model_list:
-  - model_name: qwen2.5:3b
-    litellm_params:
-      model: ollama/qwen2.5:3b
-      api_base: http://host.docker.internal:11434
+| Combo | Slot 1 | Slot 2 | RAM totale | Reste pour OS | Usage |
+|-------|--------|--------|------------|---------------|-------|
+| **A** | qwen3:32b (20GB) | qwen3:14b (9GB) | 29GB | 19GB | CEO/CTO delegue a un agent T3 |
+| **B** | qwen3-coder:30b (19GB) | qwen3:14b (9GB) | 28GB | 20GB | Dev code + QA review en parallele |
+| **C** | devstral:24b (14GB) | qwen3:14b (9GB) | 23GB | 25GB | Code leger + execution (max confort) |
+| **D** | qwen3:32b (20GB) | qwen3-coder:30b (19GB) | 39GB | 9GB | CEO decide + dev code (tendu, possible) |
+| **E** | qwen3:32b (20GB) | devstral:24b (14GB) | 34GB | 14GB | CEO decide + dev code (confortable) |
 
-general_settings:
-  drop_params: true
+### Sequencement typique d'un workflow
+
+```
+1. CEO demarre (qwen3:32b charge en Slot 1)
+   → Delegue tache au CTO
+
+2. CTO travaille (meme modele, pas de swap)
+   → Decompose en sous-taches pour Lead Backend + QA
+
+3. Lead Backend demarre (qwen3-coder:30b charge en Slot 2, swap qwen3:14b si present)
+   → Temps de swap : ~10-30s
+   → Code la feature
+
+4. QA review (qwen3:14b charge en Slot 2, swap qwen3-coder:30b)
+   → Temps de swap : ~10-30s
+   → Teste et valide
+
+5. DevOps deploy (qwen3-coder:30b recharge en Slot 2)
+   → Deploy via n8n webhook
 ```
 
-### Option cloud gratuite (recommandee pour 8GB)
-```yaml
-model_list:
-  # Groq - gratuit, ultra rapide
-  - model_name: llama-3.1-70b
-    litellm_params:
-      model: groq/llama-3.1-70b-versatile
-      api_key: "GROQ_API_KEY_ICI"
+## Modeles exclus et pourquoi
 
-  # Alternative : Together AI (free tier)
-  - model_name: qwen2.5-72b
-    litellm_params:
-      model: together_ai/Qwen/Qwen2.5-72B-Instruct-Turbo
-      api_key: "TOGETHER_API_KEY_ICI"
-
-general_settings:
-  drop_params: true
-```
+| Modele | Raison d'exclusion |
+|--------|-------------------|
+| DeepSeek-R1:32b | Pas de tool calling fiable, chain-of-thought trop lent pour un orchestrateur |
+| Llama 3.3:70b | Rentre (43GB) mais bloque toute la RAM, impossible de dual-load |
+| Llama 4 Scout (16x17b) | 67GB, ne rentre pas en 48GB |
+| Gemma3:27b | Pas de tool calling → inutilisable pour les agents Paperclip |
+| Phi-4:14b | Tool calling limite, surpasse par qwen3:14b |
+| Codestral:22b | Contexte 32K trop court, surpasse par devstral et qwen3-coder |
+| Qwen2.5-Coder:32b | Surpasse par qwen3-coder:30b (plus recent, MoE, 256K contexte) |
+| Qwen2.5:32b | Surpasse par qwen3:32b sur tous les benchmarks |

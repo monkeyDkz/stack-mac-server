@@ -2,7 +2,7 @@
 
 > Reference complementaire : [13-memory-protocol.md](./13-memory-protocol.md), [14-knowledge-workflows.md](./14-knowledge-workflows.md), [16-n8n-agent-workflows.md](./16-n8n-agent-workflows.md)
 
-Ce document definit les regles de communication entre les 11 agents Paperclip. Chaque agent DOIT suivre ces protocoles pour collaborer efficacement.
+Ce document definit les regles de communication entre les 16 agents Paperclip. Chaque agent DOIT suivre ces protocoles pour collaborer efficacement.
 
 ---
 
@@ -88,7 +88,7 @@ Chaque agent lit les memories de certains `user_id` Mem0 (incluant les user_ids 
 |-------|-------------------------------|
 | **CEO** | `cto`, `cpo`, `cfo`, `monitoring`, `analytics`, `crm` |
 | **CTO** | `ceo`, `lead-backend`, `lead-frontend`, `devops`, `security`, `qa`, `monitoring`, `deployments`, `git-events` |
-| **CPO** | `ceo`, `cto`, `designer`, `analytics`, `crm`, `calendar` |
+| **CPO** | `ceo`, `cto`, `designer`, `growth-lead`, `analytics`, `crm`, `calendar` |
 | **CFO** | `ceo`, `analytics`, `crm` |
 | **Lead Backend** | `cto`, `lead-frontend`, `qa`, `monitoring`, `git-events` |
 | **Lead Frontend** | `cto`, `lead-backend`, `designer`, `qa`, `monitoring`, `git-events` |
@@ -97,6 +97,11 @@ Chaque agent lit les memories de certains `user_id` Mem0 (incluant les user_ids 
 | **QA** | `cto`, `lead-backend`, `lead-frontend`, `monitoring` |
 | **Designer** | `cpo` |
 | **Researcher** | `cto`, `monitoring` |
+| **Growth Lead** | `cpo`, `seo`, `content-writer`, `data-analyst`, `sales-automation`, `analytics`, `crm`, `calendar` |
+| **SEO Specialist** | `growth-lead`, `data-analyst`, `analytics` |
+| **Content Writer** | `growth-lead`, `seo` |
+| **Data Analyst** | `growth-lead`, `analytics`, `crm`, `calendar` |
+| **Sales Automation** | `growth-lead`, `data-analyst`, `crm`, `calendar`, `analytics` |
 
 ### Lecture visuelle (qui voit qui)
 
@@ -108,11 +113,15 @@ CPO                                x        x      x
 CFO                                x        x
 Lead Backend            x                                                 x
 Lead Frontend           x                                                 x
-DevOps                  x                            		  x            x              x
+DevOps                  x                                    x            x              x
 Security                x                                                                x
 QA                      x
 Designer
 Researcher              x
+Growth Lead                        x        x      x
+SEO Specialist                     x
+Data Analyst                       x        x      x
+Sales Automation                   x        x      x
 ```
 
 ### Regles de visibilite
@@ -271,6 +280,9 @@ TECHNIQUE
 
 PRODUIT
   Designer / Lead → CPO → CEO
+
+GROWTH
+  SEO / Content Writer / Data Analyst / Sales Automation → Growth Lead → CPO → CEO
 
 SECURITE (URGENT — bypass hierarchie)
   N'importe quel agent → Security → CTO → CEO

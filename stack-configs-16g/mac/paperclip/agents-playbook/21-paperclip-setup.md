@@ -170,7 +170,7 @@ curl -X POST "$PAPERCLIP_URL/api/companies/$COMPANY_ID/cost-events" \
     "agentId": "<agent-id>",
     "issueId": "<issue-id>",
     "provider": "ollama",
-    "model": "qwen2.5:32b",
+    "model": "qwen3:32b",
     "inputTokens": 1500,
     "outputTokens": 800,
     "costCents": 0
@@ -279,7 +279,7 @@ curl -s "$PAPERCLIP_URL/api/agents/<agent-id>/config-revisions" \
 #     "revisionId": "rev-002",
 #     "createdAt": "2026-03-10T14:00:00Z",
 #     "changedBy": "<cto-agent-id>",
-#     "diff": { "model": {"old": "qwen2.5:14b", "new": "qwen2.5:32b"} }
+#     "diff": { "model": {"old": "qwen3:14b", "new": "qwen3:32b"} }
 #   }
 # ]
 ```
@@ -501,7 +501,7 @@ CEO_ID=$(curl -s -X POST "$PAPERCLIP_URL/api/companies/$COMPANY/agents" \
     "role": "executive",
     "title": "Chief Executive Officer",
     "adapterType": "claude_local",
-    "model": "qwen2.5:32b",
+    "model": "qwen3:32b",
     "permissions": {"canCreateAgents": true},
     "runtimeConfig": {
       "heartbeat": {"enabled": true, "intervalSec": 300, "wakeOnDemand": true, "wakeOnAssignment": true},
@@ -519,7 +519,7 @@ CTO_ID=$(curl -s -X POST "$PAPERCLIP_URL/api/companies/$COMPANY/agents" \
     \"title\": \"Chief Technology Officer\",
     \"reportsTo\": \"$CEO_ID\",
     \"adapterType\": \"claude_local\",
-    \"model\": \"qwen2.5:32b\",
+    \"model\": \"qwen3:32b\",
     \"permissions\": {\"canCreateAgents\": true},
     \"runtimeConfig\": {
       \"heartbeat\": {\"enabled\": true, \"intervalSec\": 600, \"wakeOnDemand\": true, \"wakeOnAssignment\": true},
@@ -537,7 +537,7 @@ CPO_ID=$(curl -s -X POST "$PAPERCLIP_URL/api/companies/$COMPANY/agents" \
     \"title\": \"Chief Product Officer\",
     \"reportsTo\": \"$CEO_ID\",
     \"adapterType\": \"claude_local\",
-    \"model\": \"qwen2.5:32b\",
+    \"model\": \"qwen3:32b\",
     \"permissions\": {\"canCreateAgents\": false},
     \"runtimeConfig\": {
       \"heartbeat\": {\"enabled\": true, \"intervalSec\": 600, \"wakeOnDemand\": true, \"wakeOnAssignment\": true},
@@ -555,7 +555,7 @@ CFO_ID=$(curl -s -X POST "$PAPERCLIP_URL/api/companies/$COMPANY/agents" \
     \"title\": \"Chief Financial Officer\",
     \"reportsTo\": \"$CEO_ID\",
     \"adapterType\": \"claude_local\",
-    \"model\": \"qwen2.5:14b\",
+    \"model\": \"qwen3:14b\",
     \"permissions\": {\"canCreateAgents\": false},
     \"runtimeConfig\": {
       \"heartbeat\": {\"enabled\": true, \"intervalSec\": 900, \"wakeOnDemand\": true, \"wakeOnAssignment\": true},

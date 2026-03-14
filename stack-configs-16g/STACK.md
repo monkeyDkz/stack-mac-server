@@ -1,6 +1,6 @@
 # Stack Finale — Plateforme Dev & IA Self-Hosted
 
-> 34 outils · 2 machines · 100% local · Tout connecté
+> 28 outils · 2 machines · 100% local · Tout connecté
 
 ---
 
@@ -24,29 +24,23 @@
 | OS       | Debian 12                                            |
 
 > **Note** : Toute l'IA (Ollama) tourne sur le Mac M5 Pro (48 Go).
-> 20 services serveur utilisent ~4.6 Go RAM (29%) — très confortable.
+> 21 services serveur utilisent ~4.6 Go RAM (29%) — très confortable.
 
 ---
 
-## 2. Les 34 outils
+## 2. Les 28 outils
 
-### MacBook Pro — 13 outils
+### MacBook Pro — 7 outils
 
 | #  | Outil             | Role                                              |
 |----|-------------------|----------------------------------------------------|
 | 1  | **Ollama**        | LLM local (Apple Silicon, 48 Go RAM)               |
-| 2  | **Paperclip**     | Orchestrateur agents IA                             |
-| 3  | **Obsidian**      | Knowledge base Markdown                             |
-| 4  | **SurfSense**     | RAG unifie : connecteurs, search hybride, Ollama    |
-| 5  | **Mem0**          | Memoire persistante partagee entre agents           |
-| 6  | **Chroma**        | Base vectorielle pour embeddings                    |
-| 7  | **LobeChat**      | Interface chat IA : Ollama + memoire + plugins      |
-| 8  | **Handy**         | Dictee vocale 100% offline (Whisper)                |
-| 9  | **Open Notebook** | NotebookLM local : docs, podcasts, Ollama           |
-| 10 | **Termix**        | Gestion serveur a distance (SSH)                    |
-| 11 | **LocalSend**     | Transfert fichiers Mac <-> Serveur, P2P chiffre     |
-| 12 | **KeePassXC**     | Gestionnaire mots de passe local                    |
-| 13 | **Shannon**       | Pentesting IA autonome sur tes apps web             |
+| 2  | **Paperclip**     | Orchestrateur agents IA (11 agents)                 |
+| 3  | **SiYuan Note**   | Knowledge base structuree (8 notebooks)             |
+| 4  | **Mem0**          | Memoire persistante partagee entre agents           |
+| 5  | **Chroma**        | Base vectorielle pour embeddings                    |
+| 6  | **LobeChat**      | Interface chat IA : Ollama + memoire + plugins      |
+| 7  | **LiteLLM**       | Proxy API : traduit Claude API → Ollama local       |
 
 ### Serveur HP OMEN — 21 outils
 
@@ -94,23 +88,23 @@
 ║                                                              ║
 ║            COUCHE IA & KNOWLEDGE (Mac)                       ║
 ║                                                              ║
-║   ┌────────┐  ┌───────────┐  ┌────────┐  ┌──────────────┐  ║
-║   │ Mem0   │  │ SurfSense │  │ Chroma │  │Open Notebook │  ║
-║   │Memoire │  │ RAG 25+   │  │Vector  │  │Recherche &   │  ║
-║   │agents  │  │connecteurs│  │DB      │  │Podcasts      │  ║
-║   └───┬────┘  └────┬──────┘  └───┬────┘  └──────────────┘  ║
-║       └────────────┼─────────────┘                           ║
-║                    │                                         ║
-║             ┌──────▼──────┐                                  ║
-║             │   Ollama    │                                  ║
+║   ┌────────┐  ┌──────────┐  ┌────────┐  ┌──────────────┐   ║
+║   │ Mem0   │  │  SiYuan   │  │ Chroma │  │   LiteLLM    │   ║
+║   │Memoire │  │Knowledge │  │Vector  │  │  Proxy API   │   ║
+║   │agents  │  │  Base    │  │DB      │  │              │   ║
+║   └───┬────┘  └────┬─────┘  └───┬────┘  └──────┬───────┘   ║
+║       └────────────┼────────────┘               │           ║
+║                    │                            │           ║
+║             ┌──────▼──────┐                     │           ║
+║             │   Ollama    │◄────────────────────┘           ║
 ║             │  LLM local  │                                  ║
 ║             │  48 Go RAM  │                                  ║
 ║             └──────┬──────┘                                  ║
 ║                    │                                         ║
 ║   ┌────────────────┼────────────────┐                        ║
 ║   ▼                ▼                ▼                        ║
-║ LobeChat      Paperclip         Handy                       ║
-║ (chat IA)   (orchestrateur)  (dictee vocale)                ║
+║ LobeChat      Paperclip         NetBird                     ║
+║ (chat IA)   (orchestrateur)  (VPN serveur)                  ║
 ║                                                              ║
 ╚════════════════════════╦═════════════════════════════════════╝
                          │
@@ -171,98 +165,89 @@
 
 | # | De -> Vers | Methode | Ce qui transite |
 |---|------------|---------|-----------------|
-| 1 | Handy -> Obsidian | Texte colle | Dictee vocale -> notes markdown |
-| 2 | Obsidian -> SurfSense | Connecteur natif | Indexation notes dans knowledge base |
-| 3 | SurfSense -> Chroma | API embeddings | Vecteurs pour recherche semantique |
-| 4 | SurfSense -> Ollama | LiteLLM | Inference RAG |
-| 5 | Mem0 -> Ollama | API | Memoire agents + inference |
-| 6 | Mem0 -> Paperclip | API | Contexte persistant par agent |
-| 7 | LobeChat -> Ollama | API locale | Chat IA conversationnel |
-| 8 | LobeChat -> Mem0 | Plugin | Memoire persistante dans chat |
-| 9 | Open Notebook -> Ollama | API locale | Recherche docs + podcasts |
-| 10 | Paperclip -> Ollama | API locale | Orchestration agents IA |
+| 1 | Mem0 -> Ollama | API | Memoire agents + inference |
+| 2 | Mem0 -> Chroma | API embeddings | Vecteurs pour recherche semantique |
+| 3 | Mem0 -> Paperclip | API | Contexte persistant par agent |
+| 4 | LobeChat -> Ollama | API locale | Chat IA conversationnel |
+| 5 | Paperclip -> Ollama | LiteLLM proxy | Orchestration agents IA |
+| 6 | Paperclip -> SiYuan | API REST | Knowledge base (read/write docs) |
+| 7 | Paperclip -> Mem0 | API REST | Memoire agents (read/write) |
 
 ### Mac -> Serveur
 
 | # | De -> Vers | Methode | Ce qui transite |
 |---|------------|---------|-----------------|
-| 11 | Paperclip -> Gitea | HTTP | Agent DevOps -> API repos |
-| 12 | Paperclip -> Dokploy | HTTP | Agent DevOps -> deploiement |
-| 13 | Paperclip -> n8n | HTTP | Agent -> webhooks workflows |
-| 14 | Paperclip -> BillionMail | HTTP | Agent Marketing -> campagnes |
-| 15 | Paperclip -> ntfy | HTTP | Agent -> notifications |
-| 16 | Termix -> Serveur | SSH via NetBird | Administration serveur |
-| 17 | LocalSend -> Mac <-> Serveur | P2P chiffre | Transfert fichiers |
-| 18 | Nextcloud -> Mac <-> Serveur | WebDAV sync | Cloud perso, fichiers |
-| 19 | NetBird -> Mac <-> Serveur <-> Tel | WireGuard mesh | Acces securise partout |
-| 20 | Shannon -> Gitea | Analyse code | Scan vulnerabilites |
-| 21 | Shannon -> Paperclip | Rapport | Cree issues securite |
+| 8 | Paperclip -> Gitea | HTTP | Agent DevOps -> API repos |
+| 9 | Paperclip -> Dokploy | HTTP | Agent DevOps -> deploiement |
+| 10 | Paperclip -> n8n | HTTP | Agent -> webhooks workflows |
+| 11 | Paperclip -> BillionMail | HTTP | Agent -> campagnes email |
+| 12 | Paperclip -> ntfy | HTTP | Agent -> notifications |
+| 13 | LocalSend -> Mac <-> Serveur | P2P chiffre | Transfert fichiers |
+| 14 | Nextcloud -> Mac <-> Serveur | WebDAV sync | Cloud perso, fichiers |
+| 15 | NetBird -> Mac <-> Serveur <-> Tel | WireGuard mesh | Acces securise partout |
 
 ### Serveur interne — DevOps
 
 | # | De -> Vers | Methode | Ce qui transite |
 |---|------------|---------|-----------------|
-| 22 | Gitea -> Dokploy | Webhook push | Declenche build + deploy |
-| 23 | Gitea -> n8n | Webhook | Declenche workflows CI/CD |
-| 24 | Dokploy -> Playwright | Post-deploy hook | Lance tests E2E |
-| 25 | n8n -> Dokploy | API | Controle deploiement |
-| 26 | n8n -> Playwright | API | Declenche tests |
-| 27 | n8n -> Firecrawl | API REST | Scrape web -> Markdown |
-| 28 | Firecrawl -> Redis | BullMQ | Queues de scraping |
-| 29 | Firecrawl -> Chroma (via n8n) | Workflow | Indexation contenu scrape |
+| 16 | Gitea -> Dokploy | Webhook push | Declenche build + deploy |
+| 17 | Gitea -> n8n | Webhook | Declenche workflows CI/CD |
+| 18 | Dokploy -> Playwright | Post-deploy hook | Lance tests E2E |
+| 19 | n8n -> Dokploy | API | Controle deploiement |
+| 20 | n8n -> Playwright | API | Declenche tests |
+| 21 | n8n -> Firecrawl | API REST | Scrape web -> Markdown |
+| 22 | Firecrawl -> Redis | BullMQ | Queues de scraping |
+| 23 | Firecrawl -> Chroma (via n8n) | Workflow | Indexation contenu scrape |
 
 ### Serveur interne — Business
 
 | # | De -> Vers | Methode | Ce qui transite |
 |---|------------|---------|-----------------|
-| 30 | n8n -> ntfy | HTTP POST | Notifications push |
-| 31 | n8n -> BillionMail | API | Campagnes email auto |
-| 32 | n8n -> Twenty CRM | API REST | Sync leads/deals |
-| 33 | n8n -> Paperclip | API REST | Creer taches auto |
-| 34 | Twenty CRM -> n8n | Webhooks | Nouveaux leads -> actions |
-| 35 | Twenty CRM -> BillionMail | Via n8n | Lead -> email welcome |
-| 36 | Twenty CRM -> SurfSense | Via n8n | Indexer contacts CRM |
-| 37 | Cal.com -> n8n | Webhooks | RDV booke -> actions |
-| 38 | Cal.com -> Nextcloud Calendar | CalDAV sync | Sync calendrier |
-| 39 | Umami -> n8n | API REST | Donnees analytics -> workflows |
-| 40 | Uptime Kuma -> n8n | Webhook alerte | Service down -> notification |
-| 41 | ntfy -> Toi | Push mobile | Notifications iOS/Android |
+| 24 | n8n -> ntfy | HTTP POST | Notifications push |
+| 25 | n8n -> BillionMail | API | Campagnes email auto |
+| 26 | n8n -> Twenty CRM | API REST | Sync leads/deals |
+| 27 | n8n -> Paperclip | API REST | Creer taches auto |
+| 28 | Twenty CRM -> n8n | Webhooks | Nouveaux leads -> actions |
+| 29 | Twenty CRM -> BillionMail | Via n8n | Lead -> email welcome |
+| 30 | Cal.com -> n8n | Webhooks | RDV booke -> actions |
+| 31 | Cal.com -> Nextcloud Calendar | CalDAV sync | Sync calendrier |
+| 32 | Umami -> n8n | API REST | Donnees analytics -> workflows |
+| 33 | Uptime Kuma -> n8n | Webhook alerte | Service down -> notification |
+| 34 | ntfy -> Toi | Push mobile | Notifications iOS/Android |
 
 ### Serveur interne — Infra
 
 | # | De -> Vers | Methode | Ce qui transite |
 |---|------------|---------|-----------------|
-| 42 | CrowdSec -> Caddy | Bouncer | Bloque IPs malveillantes |
-| 43 | CrowdSec -> n8n | Webhook alerte | Attaque -> notification |
-| 44 | Authelia -> Caddy | Forward auth | SSO pour tous les services |
-| 45 | Dockge -> Tous containers | Docker API | Gestion visuelle stacks |
-| 46 | Duplicati -> HDD 2 To | Destination backup | Backup local chiffre |
-| 47 | KeePassXC -> Tous | Local | Mots de passe |
+| 35 | CrowdSec -> Caddy | Bouncer | Bloque IPs malveillantes |
+| 36 | CrowdSec -> n8n | Webhook alerte | Attaque -> notification |
+| 37 | Authelia -> Caddy | Forward auth | SSO pour tous les services |
+| 38 | Dockge -> Tous containers | Docker API | Gestion visuelle stacks |
+| 39 | Duplicati -> HDD 2 To | Destination backup | Backup local chiffre |
+| 40 | KeePassXC -> Tous | Local | Mots de passe |
 
 ### Base de donnees partagee (PostgreSQL)
 
 | # | Service | Base | User |
 |---|---------|------|------|
-| 48 | Gitea | gitea_db | gitea |
-| 49 | Twenty CRM | twenty_db | twenty |
-| 50 | Cal.com | calcom_db | calcom |
-| 51 | Umami | umami_db | umami |
-| 52 | n8n | n8n_db | n8n |
-| 53 | Authelia | authelia_db | authelia |
-| 54 | Nextcloud | nextcloud_db | nextcloud |
+| 41 | Gitea | gitea_db | gitea |
+| 42 | Twenty CRM | twenty_db | twenty |
+| 43 | Cal.com | calcom_db | calcom |
+| 44 | Umami | umami_db | umami |
+| 45 | n8n | n8n_db | n8n |
+| 46 | Authelia | authelia_db | authelia |
+| 47 | Nextcloud | nextcloud_db | nextcloud |
 
 ---
 
 ## 5. Workflows cles
 
-### WF1 — Dictee -> Code -> Deploy
+### WF1 — Idee -> Code -> Deploy
 
 ```
-Handy (dictee vocale)
-  -> Obsidian (note #spec)
-  -> SurfSense (indexe -> Chroma)
-  -> Mem0 (enregistre contexte)
-  -> Paperclip (cree tache)
+Paperclip (cree tache)
+  -> Mem0 (charge contexte)
+  -> SiYuan (lit conventions)
   -> Ollama (code)
   -> git push -> Gitea
   -> Dokploy (build + deploy)
@@ -311,7 +296,7 @@ Uptime Kuma (detecte service down)
 n8n (trigger schedule ou manuel)
   -> Firecrawl API (scrape URL -> Markdown)
   -> n8n (traitement)
-  -> SurfSense / Chroma (indexation)
+  -> Chroma (indexation vecteurs)
   -> Mem0 (enrichit memoire agents)
 ```
 
@@ -322,10 +307,6 @@ CrowdSec (detecte attaque)
   -> n8n (webhook)
   -> ntfy -> alerte "Attaque detectee"
   -> Caddy bouncer (bloque IP)
-
-Shannon (scan periodique)
-  -> Gitea (analyse code)
-  -> Paperclip (cree issues securite)
 ```
 
 ### WF7 — Backup automatique
@@ -369,7 +350,6 @@ Cal.com (nouveau RDV booke)
 | stats.home | Umami | SSO |
 | backup.home | Duplicati | SSO |
 | notify.home | ntfy | Public |
-| termix.home | Termix | SSO |
 
 ---
 
@@ -389,7 +369,6 @@ Cal.com (nouveau RDV booke)
 | 3003 | Cal.com | Interne (via Caddy) |
 | 3004 | Oak | Interne (via Caddy) |
 | 3005 | Umami | Interne (via Caddy) |
-| 3006 | Termix | Interne (via Caddy) |
 | 3008 | Firecrawl | Interne (via Caddy) |
 | 5001 | Dockge | Interne (via Caddy) |
 | 5432 | PostgreSQL | Interne uniquement |

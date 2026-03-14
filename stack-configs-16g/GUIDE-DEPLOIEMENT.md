@@ -784,7 +784,7 @@ chmod +x setup-mac.sh
 ```
 
 Le script `setup-mac.sh` fait tout automatiquement :
-- Installe les outils natifs (Ollama, Obsidian, KeePassXC, LocalSend, NetBird)
+- Installe les outils natifs (Ollama, KeePassXC, LocalSend, NetBird)
 - Telecharge les modeles Ollama (llama3.2, nomic-embed-text, codellama)
 - Deploie les 6 stacks Docker dans l'ordre (Chroma, Mem0, LobeChat, etc.)
 - 100% local via Ollama — aucune cle API requise
@@ -794,7 +794,6 @@ Le detail ci-dessous est utile pour le debug ou une installation manuelle.
 ### 8.1 — Outils natifs (installes par setup-mac.sh)
 
 - **Ollama** (LLM local, tourne nativement sur Apple Silicon)
-- **Obsidian** (notes / second brain)
 - **KeePassXC** (gestionnaire mots de passe)
 - **LocalSend** (transfert fichiers local)
 - **NetBird** (VPN mesh vers le serveur)
@@ -853,33 +852,15 @@ docker compose up -d
 1. Accéder à `http://localhost:8060`
 2. Paperclip coordonne les agents IA (Ollama + Mem0)
 
-### 8.6 — Configurer Obsidian
-
-1. Ouvrir Obsidian → Create new vault
-2. Emplacement recommandé : `~/Documents/Obsidian`
-3. Plugins communautaires utiles :
-   - **Obsidian Git** → sync vers Gitea
-   - **Dataview** → requêtes sur les notes
-   - **Templater** → templates de notes
-
-**Sync Obsidian → Gitea :**
-```bash
-cd ~/Documents/Obsidian
-git init
-git remote add origin ssh://git@IP_SERVEUR:2222/ton-user/obsidian-vault.git
-git add . && git commit -m "Initial vault"
-git push -u origin main
-```
-
 ### Checkpoint Phase Mac
 
 ```
 ✅ Ollama tourne nativement (Apple Silicon, ~3x plus rapide que Docker)
 ✅ Chroma stocke les embeddings (localhost:8000)
 ✅ Mem0 gère la mémoire IA (localhost:8050)
+✅ SiYuan Note knowledge base (localhost:6806)
 ✅ LobeChat interface les modèles (localhost:3210)
 ✅ Paperclip orchestre les agents (localhost:8060)
-✅ Obsidian configuré + sync Gitea
 ✅ 100% local — aucune clé API cloud
 ```
 

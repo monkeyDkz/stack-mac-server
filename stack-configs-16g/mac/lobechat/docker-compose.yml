@@ -18,6 +18,11 @@ services:
       NEXT_PUBLIC_ANALYTICS_UMAMI: ""
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:3210"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   lobechat_data:

@@ -44,6 +44,21 @@
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+## Organigramme des agents (16 agents)
+
+```
+CEO (qwen3:32b)
+├── CTO (qwen3:32b) → Lead Backend (qwen3-coder:30b), Lead Frontend (qwen3-coder:30b), DevOps (qwen3-coder:30b), Security (qwen3:14b), QA (qwen3:14b), Researcher (qwen3:14b)
+├── CPO (qwen3:14b)
+│   ├── Designer (qwen3:14b)
+│   └── Growth Lead (qwen3:32b)
+│       ├── SEO Specialist (qwen3:14b)
+│       ├── Content Writer (qwen3:14b)
+│       ├── Data Analyst (qwen3:14b)
+│       └── Sales Automation (qwen3:14b)
+└── CFO (qwen3:14b)
+```
+
 ## Services et ports
 
 | Service | Port | Role | API Base |

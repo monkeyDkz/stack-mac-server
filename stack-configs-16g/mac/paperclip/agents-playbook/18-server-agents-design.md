@@ -18,7 +18,7 @@
 | **title** | `System Administrator` |
 | **reportsTo** | `{cto_agent_id}` |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:14b` |
+| **model** | `qwen3:14b` |
 
 ## Permissions
 
@@ -269,7 +269,7 @@ Tu es SysAdmin. Suit le Protocole Memoire (13-memory-protocol.md).
 | **title** | `Marketing Manager` |
 | **reportsTo** | `{cpo_agent_id}` |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:14b` |
+| **model** | `qwen3:14b` |
 
 ## Permissions
 
@@ -530,7 +530,7 @@ Tu es Marketing. Suit le Protocole Memoire (13-memory-protocol.md).
 | **title** | `Scheduling Coordinator` |
 | **reportsTo** | `{cpo_agent_id}` |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:14b` |
+| **model** | `qwen3:14b` |
 
 ## Permissions
 

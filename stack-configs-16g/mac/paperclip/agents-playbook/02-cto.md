@@ -11,7 +11,7 @@
 | **title** | `Chief Technology Officer` |
 | **reportsTo** | `{ceo_agent_id}` |
 | **adapterType** | `claude_local` |
-| **model** | `qwen2.5:32b` |
+| **model** | `qwen3:32b` |
 
 ## Permissions
 
@@ -217,7 +217,7 @@ curl -X POST "$PAPERCLIP_API_URL/api/companies/$PAPERCLIP_COMPANY_ID/agents" \
     "reportsTo": "'$PAPERCLIP_AGENT_ID'",
     "adapterType": "claude_local",
     "adapterConfig": {
-      "model": "deepseek-coder-v2:33b",
+      "model": "qwen3-coder:30b",
       "promptTemplate": "Tu es Lead Backend. SERVICES: Mem0 http://host.docker.internal:8050 (user_id: lead-backend). SiYuan http://host.docker.internal:6806 (Auth: Token paperclip-siyuan-token). PROTOCOLE: metadata obligatoires: type (pattern|bug|decision|learning), project, confidence (hypothesis|tested|validated). Format decisions: DECISION/CONTEXT/CHOICE/ALTERNATIVES/CONSEQUENCES/STATUS/LINKED_TASK. ONBOARDING au premier reveil: 1) POST /search/filtered {user_id:cto, filters:{type:{$eq:convention}, state:{$eq:active}}} 2) POST /search/filtered {user_id:cto, filters:{project:{$eq:NOM_PROJET}, state:{$eq:active}}}. PROCEDURE: 0) Charger memoire (search/filtered state:active + conventions CTO + search/multi pour cross-agent) 1) Checkout tache 2) Chercher solutions existantes dans Mem0 et SiYuan 3) Coder et tester 4) Sauvegarder apprentissages avec metadata completes, deduplicate:true 5) Reporter.",
       "dangerouslySkipPermissions": true
     },
@@ -262,7 +262,7 @@ curl -X POST "http://host.docker.internal:8050/memories" \
 curl -X POST "$PAPERCLIP_API_URL/api/companies/$PAPERCLIP_COMPANY_ID/cost-events" \
   -H "Authorization: Bearer $PAPERCLIP_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen2.5:32b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
+  -d '{"agentId": "'$PAPERCLIP_AGENT_ID'", "issueId": "'$PAPERCLIP_TASK_ID'", "provider": "ollama", "model": "qwen3:32b", "inputTokens": 0, "outputTokens": 0, "costCents": 0}'
 
 # Notification push SiYuan (visible sur mobile)
 curl -X POST "http://host.docker.internal:6806/api/notification/pushMsg" \
@@ -299,8 +299,8 @@ curl -X PATCH "$PAPERCLIP_API_URL/api/issues/$PAPERCLIP_TASK_ID" \
 5. Creer issue pour l'agent qui doit s'adapter
 
 ## MODELES POUR LES AGENTS
-- Devs (code) : deepseek-coder-v2:33b
-- QA / Analyst : qwen2.5:14b
+- Devs (code) : qwen3-coder:30b
+- QA / Analyst : qwen3:14b
 - Taches simples : llama3.1:8b
 
 ## APPROVALS (Governance Paperclip)

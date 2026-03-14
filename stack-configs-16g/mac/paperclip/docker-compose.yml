@@ -25,10 +25,15 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: paperclip
-      POSTGRES_PASSWORD: paperclip
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-paperclip}
       POSTGRES_DB: paperclip
     volumes:
       - paperclip_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   paperclip:
     build:
@@ -40,8 +45,8 @@ services:
     volumes:
       - paperclip_data:/paperclip
     environment:
-      DATABASE_URL: postgresql://paperclip:paperclip@paperclip-db:5432/paperclip
-      BETTER_AUTH_SECRET: paperclip-dev-secret-change-me
+      DATABASE_URL: postgresql://paperclip:${POSTGRES_PASSWORD:-paperclip}@paperclip-db:5432/paperclip
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-paperclip-dev-secret}
       # Claude Code → LiteLLM proxy (traduit API Anthropic → Ollama)
       ANTHROPIC_BASE_URL: http://litellm:4000
       ANTHROPIC_API_KEY: sk-litellm
@@ -54,8 +59,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - paperclip-db
-      - litellm
+      paperclip-db:
+        condition: service_healthy
+      litellm:
+        condition: service_started
 
 volumes:
   paperclip_data:
