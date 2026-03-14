@@ -19,7 +19,7 @@ graph_store:
 llm:
   provider: ollama
   config:
-    model: llama3.2:3b
+    model: qwen3:8b
     ollama_base_url: http://host.docker.internal:11434
 
 embedder:

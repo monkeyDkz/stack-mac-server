@@ -120,11 +120,37 @@ pull_model() {
     fi
 }
 
-pull_model "llama3.2:3b"
+# T1 — Strategie & Raisonnement (CEO, CTO, Growth Lead)
+pull_model "qwen3:32b"
+
+# T2 — Code (Lead Backend, Lead Frontend, DevOps)
+pull_model "qwen3-coder:30b"
+pull_model "devstral:24b"
+
+# T3 — Execution (CPO, CFO, QA, Security, Designer, Researcher, SEO, Content Writer, Data Analyst, Sales)
+pull_model "qwen3:14b"
+
+# Fallback ultra-leger
+pull_model "qwen3:8b"
+
+# Embeddings (Mem0, Chroma)
 pull_model "nomic-embed-text"
-pull_model "codellama:7b"
 
 log "Modeles Ollama prets"
+
+# Configurer Ollama pour 2 modeles simultanes
+info "Configuration Ollama (dual-loading)..."
+if ! grep -q "OLLAMA_MAX_LOADED_MODELS" ~/.zshrc 2>/dev/null; then
+    echo '' >> ~/.zshrc
+    echo '# Ollama — 2 modeles en RAM simultanement (48GB M5 Pro)' >> ~/.zshrc
+    echo 'export OLLAMA_MAX_LOADED_MODELS=2' >> ~/.zshrc
+    echo 'export OLLAMA_KEEP_ALIVE=10m' >> ~/.zshrc
+    log "OLLAMA_MAX_LOADED_MODELS=2 ajoute a ~/.zshrc"
+    export OLLAMA_MAX_LOADED_MODELS=2
+    export OLLAMA_KEEP_ALIVE=10m
+else
+    log "OLLAMA_MAX_LOADED_MODELS deja configure"
+fi
 
 # ============================================
 # ETAPE 3 — PREPARATION SOURCES
